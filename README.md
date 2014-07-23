@@ -4,7 +4,9 @@ OperativosII
 Once life expirence. ONCE
 
 -Todos los .java a /src
+
 -Todos los .jar a /lib
+
 -Todos los .class a /bin
 
 Para compilar por consola (desde raiz) se usa:
