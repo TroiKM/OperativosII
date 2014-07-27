@@ -65,4 +65,11 @@ public class Proceso {
       return res;
     }
   }
+
+    public String toString(){
+	return "Proceso:\n\tPriority: " + Integer.toString(getPriority())
+	    + "\n\tArrivalTime: " + Integer.toString(getArrivalTime()) 
+	    + "\n\tResources: " + resourceUse.toString();
+    }
+    
 }
