@@ -66,10 +66,14 @@ public class Proceso {
     }
   }
 
-    public String toString(){
-	return "Proceso:\n\tPriority: " + Integer.toString(getPriority())
+  /**
+   *toString: Retorna una representacion de string del proceso
+   *@return String con la informacion del proceso
+  **/
+  public String toString(){
+    return "Proceso:\n\tPriority: " + Integer.toString(getPriority())
 	    + "\n\tArrivalTime: " + Integer.toString(getArrivalTime()) 
 	    + "\n\tResources: " + resourceUse.toString();
-    }
+  }
     
 }
