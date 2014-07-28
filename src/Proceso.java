@@ -7,72 +7,87 @@ import java.util.Comparator;
  *@param arrivalTime: Tiempo de llegada del proceso
  *@param resourceUse: Lista de enteros que representa los usos de CPU que hace
  *       este proceso. Entre usos de CPU hay usos de IO
-**/
+ **/
 
 public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 
-  private int priority;
-  private int arrivalTime;
-  private ArrayList<Integer> resourceUse;
+    private static int numberProcess = 0;
+    private int PID;
+    private int priority;
+    private int arrivalTime;
+    private int finishTime;
+    private ArrayList<Integer> resourceUse;
 
-  /**
-   *Constructor de Proceso
-   *@param p: Prioridad
-   *@param t: Tiempo de llegada
-   *@return Objeto Proceso con usoRecursos inicializado y vacio
-  **/ 
+    /**
+     *Constructor de Proceso
+     *@param p: Prioridad
+     *@param t: Tiempo de llegada
+     *@return Objeto Proceso con usoRecursos inicializado y vacio
+     **/ 
 
-  public Proceso(int p, int t){
-    priority = p;
-    arrivalTime = t;
-    resourceUse = new ArrayList<Integer>();
-  }
-
-  /**
-   *getPriority: Getter de prioridad
-   *@return Prioridad del proceso
-  **/
-  public int getPriority(){
-    return priority;
-  }
-
-  /**
-   *getArrivalTime: Getter de arrivalTime
-   *@return Tiempo de llegada del proceso
-  **/
-  public int getArrivalTime(){
-    return arrivalTime;
-  }
-
-  /**
-   *insertUse: Inserta un uso de CPU a la lista de uso
-   *@param use: Entero que especifica tiempo de uso de CPU
-  **/
-  public void insertUse(Integer use){
-    resourceUse.add(use);
-  }
-
-  /**
-   *removeUse: Remueve el primer uso de la lista y lo devuelve
-   *@return Primer uso de la lista
-  **/
-  public int removeUse(){
-    if(resourceUse.isEmpty()){
-      System.out.println("ERROR: La lista esta vacia");
-      return 0;
-    }else{
-      int res = resourceUse.get(0);
-      resourceUse.remove(0);
-      return res;
+    public Proceso(int p, int t){
+	PID = numberProcess;
+	priority = p;
+	arrivalTime = t;
+	resourceUse = new ArrayList<Integer>();
+	numberProcess++;
     }
-  }
 
-  /**
-   *toString: Retorna una representacion de string del proceso
-   *@return String con la informacion del proceso
-  **/
-  public String toString(){
-    return "Proceso:\n\tPriority: " + Integer.toString(getPriority())
+    /**
+     *getPriority: Getter de prioridad
+     *@return Prioridad del proceso
+     **/
+    public int getPriority(){
+	return priority;
+    }
+
+    /**
+     *getArrivalTime: Getter de arrivalTime
+     *@return Tiempo de llegada del proceso
+     **/
+    public int getArrivalTime(){
+	return arrivalTime;
+    }
+
+    /**
+     *insertUse: Inserta un uso de CPU a la lista de uso
+     *@param use: Entero que especifica tiempo de uso de CPU
+     **/
+    public void insertUse(Integer use){
+	resourceUse.add(use);
+    }
+
+    /**
+     *removeUse: Remueve el primer uso de la lista y lo devuelve
+     *@return Primer uso de la lista
+     **/
+    public int removeUse(){
+	if(resourceUse.isEmpty()){
+	    System.out.println("ERROR: La lista esta vacia");
+	    return 0;
+	}else{
+	    int res = resourceUse.get(0);
+	    resourceUse.remove(0);
+	    return res;
+	}
+    }
+
+    public void setFinishTime(int f){
+	this.finishTime = f;
+    }
+
+    public int getFinishTime(){
+	return finishTime;
+    }
+    	    
+
+    /**
+     *toString: Retorna una representacion de string del proceso
+     *@return String con la informacion del proceso
+     **/
+    public String toString(){
+	return "Proceso " + Integer.toString(this.PID)
+	    +":\n\tPriority: " + Integer.toString(getPriority())
 	    + "\n\tArrivalTime: " + Integer.toString(getArrivalTime()) 
 	    + "\n\tResources: " + resourceUse.toString();
   }
@@ -89,4 +104,5 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
       return p1.priority - p.priority;
    }
   
+
 }
