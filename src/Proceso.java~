@@ -81,7 +81,7 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
   */
   @Override
    public int compareTo(Proceso p){
-      return (new Integer(p.priority)).compareTo(new Integer(this.priority));
+      return -(new Integer(this.priority)).compareTo(new Integer(p.priority));
    }
 
    // Overriding the compare method to sort the age 
