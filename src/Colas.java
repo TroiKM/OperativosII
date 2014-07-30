@@ -29,5 +29,9 @@ public class Colas{
     public synchronized Proceso peekElem(){
 		return cola.peek(); //Nuevo
     }
+
+    public synchronized boolean isEmpty(){
+		return cola.isEmpty();
+    }
     
 }

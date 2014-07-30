@@ -14,9 +14,12 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
     private static int numberProcess = 0;
     private int PID;
     private int priority;
+    private int envejecimiento;
     private int arrivalTime;
     private int finishTime;
+    private int IOTime;
     private ArrayList<Integer> resourceUse;
+    private int currentQuantum;
 
     /**
      *Constructor de Proceso
@@ -29,6 +32,9 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 	PID = numberProcess;
 	priority = p;
 	arrivalTime = t;
+        envejecimiento = 0;
+        IOTime = 0;
+        currentQuantum = 0;
 	resourceUse = new ArrayList<Integer>();
 	numberProcess++;
     }
@@ -79,7 +85,42 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
     public int getFinishTime(){
 	return finishTime;
     }
-    	    
+
+    public int getIOTime(){
+ 	return IOTime;
+    }
+
+    public void setIOTime(int t){
+    	IOTime = t;
+    }             	   
+
+    public int getCurrentQuantum(){
+    	return currentQuantum;
+    }
+
+    public void setCurrentQuantum(int i){
+    	currentQuantum = i;
+    } 
+
+    public int getFirstUse(){
+    	return resourceUse.get(0);
+    }
+
+    public void setFirstUse(int u){
+    	resourceUse.set(0,u);
+    }
+
+    public boolean useEmpty(){
+    	return resourceUse.isEmpty();
+    }
+
+    public void removeFirstUse(){
+        resourceUse.remove(0);
+    }
+
+    public void setEnvejecimiento(int e){
+    	envejecimiento = e;
+    }
 
     /**
      *toString: Retorna una representacion de string del proceso

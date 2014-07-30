@@ -5,15 +5,23 @@
 public class CPU implements Runnable{
   
   private Tick timer;
-  String name;
+  private Colas waiting;
+  private Colas nuevo;
+  private Ready ready;
+  private Colas finished;
+  private int quantum;
 
   /**
    *Constructor de CPU. Corre El hilo
    *@param t: Tick a asignar al CPU
   **/
-  public CPU(Tick t, String n){
+  public CPU(Tick t, Ready r, Colas w, Colas n, Colas f, int q){
     timer = t;
-    name = n;
+    ready = r;
+    waiting = w;
+    nuevo = n;
+    finished = f;
+    quantum = q;
     new Thread(this,"CPU").start();
   }
 
@@ -22,20 +30,50 @@ public class CPU implements Runnable{
   **/
   public void run(){
     while(true){
-      System.out.println("Comenzando " + name);
       timer.startJob();
-      System.out.println(name + " dice que el tiempo del timer es " +
-                         timer.getTime());
+      newToReady();
+      processReady();
+      readyToRun();
+      runCurrentProcess();
+      ageProcesses();
       timer.endJob();
     }
   }
 
-  public static void main(String args[]){
-    Tick timer = new Tick();
-    new CPU(timer,"CPU 1");
-    new CPU(timer,"CPU 2");
-    while(true){
-      timer.tick();
+  public void newToReady(){
+    boolean hayMas = true;
+    while(!nuevo.isEmpty() && hayMas){
+      Proceso temp = nuevo.peekElem();
+      if(temp.getArrivalTime() >= timer.getTime()){
+        Proceso.setCurrentQuantum(quantum);
+        ready.addElem(Proceso);
+        nuevo.removeElem();
+      }else{
+        hayMas = false;
+      }
     }
   }
+
+  public processReady(){
+    if(!ready.isEmpty()){
+      Proceso running = ready.peekElem();
+      running.setFirstUse(running.getFirstUse() - 1);
+      if(running.getFirstUse() <= 0){
+        running.removeFirstUse();
+        if(running.useEmpty()){
+          running.setFinishTime(timer.getTime());
+          finished.add(running);
+        }else{
+          running.setCurrentQuantum(quantum);
+          running.setIOTime(5);
+          running.setEnvejecimiento(0);
+          waiting.add(running);
+        }
+        ready.removeElem();
+      }
+                
+        
+    }
+  }
+      
 }
