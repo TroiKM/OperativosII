@@ -33,8 +33,6 @@ public class CPU implements Runnable{
       timer.startJob();
       newToReady();
       processReady();
-      readyToRun();
-      runCurrentProcess();
       ageProcesses();
       timer.endJob();
     }
@@ -45,8 +43,8 @@ public class CPU implements Runnable{
     while(!nuevo.isEmpty() && hayMas){
       Proceso temp = nuevo.peekElem();
       if(temp.getArrivalTime() >= timer.getTime()){
-        Proceso.setCurrentQuantum(quantum);
-        ready.addElem(Proceso);
+        temp.setCurrentQuantum(quantum);
+        ready.addElem(temp);
         nuevo.removeElem();
       }else{
         hayMas = false;
@@ -54,7 +52,7 @@ public class CPU implements Runnable{
     }
   }
 
-  public processReady(){
+  public void processReady(){
     if(!ready.isEmpty()){
       Proceso running = ready.peekElem();
       running.setFirstUse(running.getFirstUse() - 1);
@@ -62,17 +60,25 @@ public class CPU implements Runnable{
         running.removeFirstUse();
         if(running.useEmpty()){
           running.setFinishTime(timer.getTime());
-          finished.add(running);
+          finished.addElem(running);
         }else{
           running.setCurrentQuantum(quantum);
           running.setIOTime(5);
-          running.setEnvejecimiento(0);
-          waiting.add(running);
+          running.resetEnvejecimiento();
+          waiting.addElem(running);
         }
         ready.removeElem();
+      }else if(running.getCurrentQuantum() <= 0){
+        running.envejecer(-2);
+        ready.removeElem();
+        ready.addElem(running);
       }
-                
-        
+    }
+  }
+
+  public void ageProcesses(){
+    for(Proceso p : ready.getQueue()){
+      p.envejecer(1);
     }
   }
       

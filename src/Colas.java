@@ -17,6 +17,10 @@ public class Colas{
 	public Colas(){
 		cola = new LinkedList<Proceso>();
 	}
+
+    public synchronized Queue<Proceso> getQueue(){
+    	return cola;
+    }
 	
 	public synchronized void addElem(Proceso p){
 		cola.add(p);

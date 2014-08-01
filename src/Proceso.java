@@ -122,6 +122,14 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
     	envejecimiento = e;
     }
 
+    public void resetEnvejecimiento(){
+    	envejecimiento = 0;
+    }
+ 
+    public void envejecer(int e){
+    	envejecimiento += e;
+    }
+
     /**
      *toString: Retorna una representacion de string del proceso
      *@return String con la informacion del proceso
@@ -137,12 +145,12 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
   */
   @Override
    public int compareTo(Proceso p){
-      return (new Integer(p.priority)).compareTo(new Integer(this.priority));
+      return (new Integer(p.priority + p.envejecimiento))
+             .compareTo(new Integer(this.priority + this.envejecimiento));
    }
 
-   // Overriding the compare method to sort the age 
    public int compare(Proceso p, Proceso p1){
-      return p1.priority - p.priority;
+      return p1.priority + p1.envejecimiento - p.priority - p.envejecimiento;
    }
   
 
