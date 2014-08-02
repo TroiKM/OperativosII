@@ -8,17 +8,18 @@ public class ES implements Runnable {
 	private Tick timer;
 	private Colas waiting;
         private Ready ready;
+        private Colas nuevo;
   
 	/**
 	*Constructor de E/S. Corre El hilo
 	*@param t: Tick a asignar al E/S.
 	**/
-	public ES(Tick t, Colas w, Ready r){
+	public ES(Tick t, Colas w, Ready r, Colas n){
 		
 		timer = t;
 		waiting = w;
 		ready = r;
-		new Thread(this,"ES").start();
+                nuevo = n;
 
 	}
 
@@ -27,11 +28,12 @@ public class ES implements Runnable {
 	**/
 	public void run(){
  
-     		while(true){
+     		while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
                   timer.startJob();
 		  processWaiting();
                   timer.endJob();
 		}
+		System.out.println("ES acaba su corrida");
 	}
 
 	/**

@@ -17,9 +17,9 @@ public class Tick{
   **/
   public Tick(){
     time = 0;
-    finished = 0;
     ok_to_tick = false;
     ok_to_run = true;
+    finished = 0;
   }
   
   /**
@@ -67,14 +67,15 @@ public class Tick{
   **/
   public synchronized void endJob(){
     finished++;
-    while(finished != MAX_DEVICES){
-      try{
-        wait();
-      }catch(InterruptedException e){
-        e.printStackTrace();
+    if(finished != MAX_DEVICES){
+      while(finished != MAX_DEVICES){
+        try{
+          wait();
+        }catch(InterruptedException e){
+          e.printStackTrace();
+        }
       }
-    }
-    if(!ok_to_tick){
+    }else{
       ok_to_tick = true;
       ok_to_run = false;
       notifyAll();
