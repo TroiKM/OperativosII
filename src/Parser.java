@@ -10,7 +10,9 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 public class Parser
-{    
+{
+    
+    
     public static void main(String args[])
 	{
 
@@ -76,7 +78,7 @@ public class Parser
 			
 		    }
 		    
-		    System.out.println(process);		  		    
+		    System.out.println(process);
 		}
 	    }
 	    
