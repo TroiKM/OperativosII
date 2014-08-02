@@ -28,10 +28,15 @@ public class ES implements Runnable {
 	**/
 	public void run(){
  
-     		while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
-                  timer.startJob();
-		  processWaiting();
-                  timer.endJob();
+	    while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
+		System.out.println("E/S say: starJob...");
+		timer.startJob();
+		System.out.println("E/S say: done!\tprocessWaiting...");
+		processWaiting();
+		System.out.println("E/S say: done!\tendJob...");
+		timer.endJob();
+		System.out.println("E/S say: done!\n");
+			  
 		}
 		System.out.println("ES acaba su corrida");
 	}
