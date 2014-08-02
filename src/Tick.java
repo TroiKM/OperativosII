@@ -19,7 +19,8 @@ public class Tick{
     time = 0;
     ok_to_tick = false;
     ok_to_run = true;
-    finished = 0;
+    finished = MAX_DEVICES;
+    //finished = 0;
   }
   
   /**
@@ -45,7 +46,8 @@ public class Tick{
     time++;
     ok_to_run = true;
     ok_to_tick = false;
-    finished = 0;
+//    finished = 0;
+    finished = MAX_DEVICES;
     notifyAll();
   }
 
@@ -66,20 +68,35 @@ public class Tick{
    *endJob: Termina un manejador
   **/
   public synchronized void endJob(){
-    finished++;
-    if(finished != MAX_DEVICES){
-      while(finished != MAX_DEVICES){
-        try{
-          wait();
-        }catch(InterruptedException e){
-          e.printStackTrace();
-        }
+      finished--;
+      if(finished == 0){
+	  ok_to_tick = true;
+	  ok_to_run = false;
+	  notifyAll();
+      }else{
+	  try{
+	      wait();
+	  }catch(InterruptedException e){
+	      e.printStackTrace();
+	  }
       }
-    }else{
-      ok_to_tick = true;
-      ok_to_run = false;
-      notifyAll();
-    }
+      
+      
+    // if(finished != MAX_DEVICES){
+    //   while(finished != MAX_DEVICES){
+    //     try{
+    //       wait();
+    //     }catch(InterruptedException e){
+    //       e.printStackTrace();
+    //     }
+    //   }
+      
+    // }else{
+    //   ok_to_tick = true;
+    //   ok_to_run = false;
+      
+    //   notifyAll();
+    // }
   }
 
 }

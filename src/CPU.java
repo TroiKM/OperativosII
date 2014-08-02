@@ -28,12 +28,19 @@ public class CPU implements Runnable{
    *Run: Metodo de Hilo
   **/
   public void run(){
-    while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
-      timer.startJob();
-      newToReady();
-      processReady();
-      ageProcesses();
-      timer.endJob();
+      while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
+	  System.out.println("CPU say: starJob...");
+	  timer.startJob();
+	  System.out.println("CPU say: done!\tnewToReady...");
+	  newToReady();
+	  System.out.println("CPU say: done!\tprocessReady...");
+	  processReady();
+	  System.out.println("CPU say: done!\tageProcesses...");
+	  ageProcesses();
+	  System.out.println("CPU say: done!\tendJob...");
+	  timer.endJob();
+	  System.out.println("CPU say: done!\n");
+
     }
     System.out.println("CPU acaba su corrida");
   }
