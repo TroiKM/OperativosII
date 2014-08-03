@@ -8,18 +8,18 @@ public class ES implements Runnable {
 	private Tick timer;
 	private Colas waiting;
         private Ready ready;
-        private Colas nuevo;
+	private Colas finished;
   
 	/**
 	*Constructor de E/S. Corre El hilo
 	*@param t: Tick a asignar al E/S.
 	**/
-	public ES(Tick t, Colas w, Ready r, Colas n){
+	public ES(Tick t, Colas w, Ready r, Colas f){
 		
 		timer = t;
 		waiting = w;
 		ready = r;
-                nuevo = n;
+ 		finished = f;
 
 	}
 
@@ -28,8 +28,8 @@ public class ES implements Runnable {
 	**/
 	public void run(){
  
-	    while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
-		System.out.println("E/S say: starJob...");
+	    while(finished.size() < timer.getMaxProc()){
+		System.out.println("E/S say: startJob...");
 		timer.startJob();
 		System.out.println("E/S say: done!\tprocessWaiting...");
 		processWaiting();
@@ -37,8 +37,8 @@ public class ES implements Runnable {
 		timer.endJob();
 		System.out.println("E/S say: done!\n");
 			  
-		}
-		System.out.println("ES acaba su corrida");
+	     }
+	     System.out.println("ES acaba su corrida");
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class ES implements Runnable {
 		if(!waiting.isEmpty()){
                   Proceso temp = waiting.peekElem();
 		  temp.setIOTime(temp.getIOTime()-1);
-                  if(temp.getIOTime() == 0){
+                  if(temp.getIOTime() <= 0){
                   	ready.addElem(temp);
 			waiting.removeElem();
   		  }

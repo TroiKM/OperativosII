@@ -9,6 +9,7 @@ public class CPU implements Runnable{
   private Colas nuevo;
   private Ready ready;
   private Colas finished;
+  private Proceso running;
   private int quantum;
 
   /**
@@ -28,8 +29,8 @@ public class CPU implements Runnable{
    *Run: Metodo de Hilo
   **/
   public void run(){
-      while(!(waiting.isEmpty() && ready.isEmpty() && nuevo.isEmpty())){
-	  System.out.println("CPU say: starJob...");
+      while(finished.size() < timer.getMaxProc()){
+	  System.out.println("CPU say: startJob...");
 	  timer.startJob();
 	  System.out.println("CPU say: done!\tnewToReady...");
 	  newToReady();
@@ -60,23 +61,21 @@ public class CPU implements Runnable{
   }
 
   public void processReady(){
-    if(!ready.isEmpty()){
-      Proceso running = ready.peekElem();
-      if(running.useEmpty()){
-        endProcess(running);
-      }else{
-        running.setFirstUse(running.getFirstUse() - 1);
-        running.setCurrentQuantum(running.getCurrentQuantum() - 1);
-        if(running.getFirstUse() <= 0){
-          running.removeFirstUse();
-          if(running.useEmpty()){
-            endProcess(running);
-          }else{
-            sendProcessToIO(running);
-          }
-        }else if(running.getCurrentQuantum() <= 0){
-          reinsertProcess(running);
+    if(!(ready.isEmpty() && running == null)){
+      if(running == null){
+        running = ready.removeElem();
+      }
+      running.setFirstUse(running.getFirstUse() - 1);
+      running.setCurrentQuantum(running.getCurrentQuantum() - 1);
+      if(running.getFirstUse() <= 0){
+        running.removeFirstUse();
+        if(running.useEmpty()){
+          endProcess(running);
+        }else{
+          sendProcessToIO(running);
         }
+      }else if(running.getCurrentQuantum() <= 0){
+        reinsertProcess(running);
       }
     }
   }
@@ -90,7 +89,7 @@ public class CPU implements Runnable{
   private void endProcess(Proceso p){
     p.setFinishTime(timer.getTime());
     finished.addElem(p);
-    ready.removeElem();
+    running = null;
   }
 
   private void sendProcessToIO(Proceso p){
@@ -98,13 +97,14 @@ public class CPU implements Runnable{
     p.setIOTime(5);
     p.resetEnvejecimiento();
     waiting.addElem(p);
-    ready.removeElem();
+    running = null;
   }
 
   private void reinsertProcess(Proceso p){
     p.envejecer(-2);
-    ready.removeElem();
+    p.setCurrentQuantum(quantum);
     ready.addElem(p);
+    running = null;
   }
   
 }

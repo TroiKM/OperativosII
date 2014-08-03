@@ -49,6 +49,10 @@ public class Colas{
 		return cola.isEmpty();
     }
 
+    public synchronized int size(){
+    		return cola.size();
+    }
+
     public void parse(String file){
 	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	Document document = null;

@@ -138,7 +138,8 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 	return "Proceso " + Integer.toString(this.PID)
 	    +":\n\tPriority: " + Integer.toString(getPriority())
 	    + "\n\tArrivalTime: " + Integer.toString(getArrivalTime()) 
-	    + "\n\tResources: " + resourceUse.toString();
+	    + "\n\tResources: " + resourceUse.toString()
+            + "\n\tFinish time: " + finishTime;
   }
   
   /**

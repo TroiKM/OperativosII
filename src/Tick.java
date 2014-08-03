@@ -10,16 +10,18 @@ public class Tick{
   private boolean ok_to_tick;
   private boolean ok_to_run;
   private int finished;
+  private int numProc;
 
   /**
    *Constructor del Tick
    *@return Objeto Tick. Inicializa el thread del reloj
   **/
-  public Tick(){
+  public Tick(int n){
     time = 0;
     ok_to_tick = false;
     ok_to_run = true;
     finished = MAX_DEVICES;
+    numProc = n;
     //finished = 0;
   }
   
@@ -97,6 +99,10 @@ public class Tick{
       
     //   notifyAll();
     // }
+  }
+
+  public int getMaxProc(){
+    return numProc;
   }
 
 }
