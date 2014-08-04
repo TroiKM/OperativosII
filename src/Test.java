@@ -6,8 +6,6 @@
 * Test: Clase main (?)
 */
 
-
-
 public class Test {
 
 	public static int ocio = 0;
@@ -43,7 +41,7 @@ public class Test {
 		
 		ocio = ((ocio * 100)/ timer.getTime());
 		
-		System.out.println("% Ocio de CPU: " + ocio + "%.");
+		System.out.println("Ocio de CPU: " + ocio + "%.");
 		/*for(Proceso p : finished.getQueue()){
 			System.out.println(p);    
 		}*/
