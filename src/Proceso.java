@@ -23,6 +23,7 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 	private int arrivalTime;
 	private int finishTime;
 	private int IOTime;
+	private int waitTime;
 	private ArrayList<Integer> resourceUse;
 	private int currentQuantum;
 
@@ -39,6 +40,7 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 		envejecimiento = 0;
 		IOTime = 0;
 		currentQuantum = 0;
+		waitTime = 0;
 		resourceUse = new ArrayList<Integer>();
 		numberProcess++;
 	}
@@ -132,6 +134,14 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 
 	public void envejecer(int e){
 		envejecimiento += e;
+	}
+
+	public void incrementarEspera(){
+		++waitTime;
+	}
+
+	public int getWaitTime(){
+		return waitTime;
 	}
 
 	/**

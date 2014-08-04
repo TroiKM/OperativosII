@@ -101,9 +101,8 @@ public class CPU implements Runnable{
 	public void ageProcesses()
 	{
 		
-		for(Proceso p : ready.getQueue()){
-			p.envejecer(1);
-		}
+		ready.envejecer(1);
+		ready.incrementarEspera();
 		
 	}
 

@@ -56,8 +56,20 @@ public class Colas
     }
 
     public synchronized int size(){
-    		return cola.size();
+    	return cola.size();
     }
+
+	public synchronized void envejecer(int e){
+	 	for(Proceso p : cola){
+			p.envejecer(e);
+		}
+	}
+
+	public synchronized void incrementarEspera(){
+		for(Proceso p : cola){
+			p.incrementarEspera();
+		}
+	}
 
     public void parse(String file)
     {

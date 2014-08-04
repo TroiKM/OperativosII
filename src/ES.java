@@ -39,7 +39,6 @@ public class ES implements Runnable {
 			processWaiting();
 			timer.endJob();
 		}
-	    System.out.println("ES acaba su corrida");
 	}
 
 	/**
@@ -58,5 +57,7 @@ public class ES implements Runnable {
 				waiting.removeElem();
 			}
 		}
+		waiting.incrementarEspera();
 	}
+
 }
