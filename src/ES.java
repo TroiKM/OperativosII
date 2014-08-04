@@ -1,18 +1,23 @@
 /**
- *E/S: Clase que representa al manejador del recursos
- *    de Entrada/Salida.
- *@param 
-**/
+* @author Karen Troiano		09-10855
+* @author Luis Miranda		10-10463
+* @author Jose Montenegro	10-10469
+*
+* E/S: Clase que representa al manejador del recursos
+*	de Entrada/Salida.
+* 
+*/
+
 public class ES implements Runnable {
   
 	private Tick timer;
 	private Colas waiting;
-        private Ready ready;
+	private Ready ready;
 	private Colas finished;
   
 	/**
-	*Constructor de E/S. Corre El hilo
-	*@param t: Tick a asignar al E/S.
+	* Constructor de E/S. Corre El hilo
+	* @param t: Tick a asignar al E/S.
 	**/
 	public ES(Tick t, Colas w, Ready r, Colas f){
 		
@@ -23,36 +28,35 @@ public class ES implements Runnable {
 
 	}
 
-        /**
-         *Run: Metodo de hilo
-	**/
+	/**
+	* Run: Metodo de hilo
+	*/
 	public void run(){
  
-	    while(finished.size() < timer.getMaxProc()){
-		System.out.println("E/S say: startJob...");
-		timer.startJob();
-		System.out.println("E/S say: done!\tprocessWaiting...");
-		processWaiting();
-		System.out.println("E/S say: done!\tendJob...");
-		timer.endJob();
-		System.out.println("E/S say: done!\n");
-			  
-	     }
-	     System.out.println("ES acaba su corrida");
+	    while(finished.size() < timer.getMaxProc())
+	    {
+			timer.startJob();
+			processWaiting();
+			timer.endJob();
+		}
+	    System.out.println("ES acaba su corrida");
 	}
 
 	/**
-	 *ProcessWaiting: Procesa la cola de waiting en un solo tick
-	**/
+	 * ProcessWaiting: Procesa la cola de waiting en un solo tick
+	*/
 	public void processWaiting(){
 
-		if(!waiting.isEmpty()){
-                  Proceso temp = waiting.peekElem();
-		  temp.setIOTime(temp.getIOTime()-1);
-                  if(temp.getIOTime() <= 0){
-                  	ready.addElem(temp);
-			waiting.removeElem();
-  		  }
-                }
+		if(!waiting.isEmpty())
+		{
+			Proceso temp = waiting.peekElem();
+			temp.setIOTime(temp.getIOTime()-1);
+			
+			if(temp.getIOTime() <= 0)
+			{
+				ready.addElem(temp);
+				waiting.removeElem();
+			}
+		}
 	}
 }

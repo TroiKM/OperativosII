@@ -1,7 +1,13 @@
 /**
- *Colas: Clase que representa al monitor de colas.
- *@param timer: Tick que representa el timer del CPU
-**/
+* @author Karen Troiano		09-10855
+* @author Luis Miranda		10-10463
+* @author Jose Montenegro	10-10469
+*
+* Ready: Clase hija de Colas para el manejo de la
+* 	cola de listos.
+* 
+* @param timer: Tick que representa el timer del CPU
+*/
 
 import java.util.PriorityQueue;
 
