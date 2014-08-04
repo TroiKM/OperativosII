@@ -16,7 +16,7 @@ public class Test {
 		Colas waiting = new Colas();
 		Ready ready = new Ready();
 		Colas finished = new Colas();
-		nuevo.parse("process_request_file.xml");
+		nuevo.parse("../bash/process_request_file.xml");
 		Tick timer = new Tick(nuevo.size());
 
 			
@@ -41,10 +41,37 @@ public class Test {
 		
 		ocio = ((ocio * 100)/ timer.getTime());
 		
-		System.out.println("Ocio de CPU: " + ocio + "%.");
-		/*for(Proceso p : finished.getQueue()){
-			System.out.println(p);    
-		}*/
+		System.out.println("% Ocio de CPU: " + ocio + "%.");
+
+		System.out.println("Tiempo promedio de ejecucion: " + 
+		getAverageRunningTime(finished,timer));
+
+		System.out.println("Tiempo promedio de espera: " +
+		getAverageWaitTime(finished,timer));
+
 
 	}
+
+	public static int getAverageRunningTime(Colas f, Tick t){
+		int totalTime = 0;
+
+		for(Proceso p : f.getQueue())
+		{
+			totalTime += (p.getFinishTime() - p.getArrivalTime());
+		}
+
+		return totalTime/t.getMaxProc();
+	}
+
+	public static int getAverageWaitTime(Colas f, Tick t){
+		int totalTime = 0;
+
+		for(Proceso p: f.getQueue())
+		{
+			totalTime += p.getWaitTime();
+		}
+
+		return totalTime/t.getMaxProc();
+	}
+
 }
