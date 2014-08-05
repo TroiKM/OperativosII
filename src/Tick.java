@@ -55,6 +55,7 @@ public class Tick{
 		ok_to_tick = false;
 		//    finished = 0;
 		finished = MAX_DEVICES;
+		System.out.println(Proceso.all);
 		notifyAll();
 	}
 

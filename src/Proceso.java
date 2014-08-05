@@ -13,20 +13,25 @@
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 
-	private static int numberProcess = 0;
-	private int PID;
+    private static int numberProcess = 0;
+    public static Queue<Proceso> all = new LinkedList<Proceso>();
+
+    private int PID;
 	private int priority;
 	private int envejecimiento;
 	private int arrivalTime;
-	private int finishTime;
+    private int finishTime;
 	private int IOTime;
-	private int waitTime;
-	private ArrayList<Integer> resourceUse;
-	private int currentQuantum;
-
+    private int waitTime;
+    private ArrayList<Integer> resourceUse;
+    private int currentQuantum;
+    private String state;
+    
 	/**
 	* Constructor de Proceso
 	* @param p: Prioridad
@@ -43,6 +48,8 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 		waitTime = 0;
 		resourceUse = new ArrayList<Integer>();
 		numberProcess++;
+		state = "Nuevo";
+		all.add(this);
 	}
 
 	/**
@@ -98,7 +105,16 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 
 	public void setIOTime(int t){
 		IOTime = t;
-	}             	   
+	}
+
+    public String getState(){
+	return state;
+    }
+
+    public void setState(String t){
+	state = t;
+    }             	   
+
 
 	public int getCurrentQuantum(){
 		return currentQuantum;
@@ -149,21 +165,37 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 	* @return String con la informacion del proceso
 	**/
 	public String toString(){
-		return "Proceso " + Integer.toString(this.PID)
-			+":\n\tPriority: " + Integer.toString(getPriority())
-			+ "\n\tArrivalTime: " + Integer.toString(getArrivalTime()) 
-			+ "\n\tResources: " + resourceUse.toString()
-			+ "\n\tFinish time: " + finishTime;
+		return "\nProceso " + Integer.toString(this.PID)
+		    +":\tPriority: " + Integer.toString(this.priority)
+		    +":\tEnvejecimiento: " + Integer.toString(this.envejecimiento)
+		    +":\tArrivalTime: " + Integer.toString(this.arrivalTime)
+		    + "\tState: "+this.state
+		    + "\tState: "+ this.resourceUse
+		    + "\tQuantum: "+Integer.toString(this.currentQuantum)+"\n";
+
 	}
 	
-	@Override
-	public int compareTo(Proceso p){
-		return (new Integer(p.priority + p.envejecimiento))
-				.compareTo(new Integer(this.priority + this.envejecimiento));
+    @Override
+    public int compareTo(Proceso p){
+	if(p.state.compareTo("Nuevo")==0){
+	    return (new Integer(this.arrivalTime))
+		.compareTo(new Integer(p.arrivalTime));
+	}else{
+	    return (new Integer(p.priority + p.envejecimiento))
+		.compareTo(new Integer(this.priority + this.envejecimiento));
 	}
 	
-	public int compare(Proceso p, Proceso p1){
-		return p1.priority + p1.envejecimiento - p.priority - p.envejecimiento;
+    }
+    
+    public int compare(Proceso p, Proceso p1){
+	if(p.state.compareTo("Nuevo")==0){
+	    return p1.arrivalTime - p.arrivalTime;
+	}else{
+	    return p1.priority + p1.envejecimiento - p.priority - p.envejecimiento;
 	}
-	
+		    	
+    }
+
+    
+    
 }
