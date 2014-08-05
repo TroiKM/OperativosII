@@ -120,7 +120,7 @@ public class CPU implements Runnable{
 	private void sendProcessToIO(Proceso p)
 	{
 		p.setCurrentQuantum(quantum);
-		p.setIOTime(5);
+		p.setIOTime(-1);
 		p.resetEnvejecimiento();
 		p.setState("Bloqueado");				
 		waiting.addElem(p);

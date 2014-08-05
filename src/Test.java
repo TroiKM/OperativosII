@@ -11,6 +11,11 @@ public class Test {
 	public static int ocio = 0;
 	
 	public static void main(String args[]){
+
+		if(args.length != 2){
+			System.out.println("Uso: java Test <Quantum> <TiempoIO>");
+			System.exit(0);
+		}
 		
 		Ready nuevo = new Ready();
 		Colas waiting = new Colas();
@@ -23,13 +28,13 @@ public class Test {
 		
 			
 		Thread cpu = new Thread(new
-		CPU(timer,ready,waiting,nuevo,finished,4),"CPU");
-		
-		Thread es1 = new Thread(new ES(timer,waiting,ready,finished),"ES1");
-		Thread es2 = new Thread(new ES(timer,waiting,ready,finished),"ES2");
+		CPU(timer,ready,waiting,nuevo,finished,Integer.parseInt(args[0])),"CPU");
+
+		Thread es = new Thread(new
+		ES(timer,waiting,ready,finished,Integer.parseInt(args[1])),"ES");
+
 		cpu.start();
-		es1.start();
-		es2.start();
+		es.start();
 		
 		while(finished.size() < timer.getMaxProc()) {
 		    System.out.println("-------------- Tiempo " + timer.getTime() +" --------------");					
@@ -40,8 +45,7 @@ public class Test {
 
 		try{
 			cpu.join();
-			es1.join();
-			es2.join();
+			es.join();
 		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}

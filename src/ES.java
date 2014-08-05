@@ -14,17 +14,19 @@ public class ES implements Runnable {
 	private Colas waiting;
 	private Ready ready;
 	private Colas finished;
+	private int IOTime;
   
 	/**
 	* Constructor de E/S. Corre El hilo
 	* @param t: Tick a asignar al E/S.
 	**/
-	public ES(Tick t, Colas w, Ready r, Colas f){
+	public ES(Tick t, Colas w, Ready r, Colas f, int i){
 		
 		timer = t;
 		waiting = w;
 		ready = r;
  		finished = f;
+		IOTime = i;
 
 	}
 
@@ -49,12 +51,13 @@ public class ES implements Runnable {
 		if(!waiting.isEmpty())
 		{
 			Proceso temp = waiting.peekElem();
+			if(temp.getIOTime() == -1) temp.setIOTime(IOTime);
 			temp.setIOTime(temp.getIOTime()-1);
 			
 			if(temp.getIOTime() <= 0)
 			{
-			    temp.setState("Listo");
-			    
+				temp.setState("Listo");
+			   
 				ready.addElem(temp);
 				waiting.removeElem();
 			}
