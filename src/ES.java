@@ -53,6 +53,8 @@ public class ES implements Runnable {
 			
 			if(temp.getIOTime() <= 0)
 			{
+			    temp.setState("Listo");
+			    
 				ready.addElem(temp);
 				waiting.removeElem();
 			}

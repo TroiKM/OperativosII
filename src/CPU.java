@@ -60,6 +60,7 @@ public class CPU implements Runnable{
 			if(timer.getTime() >= temp.getArrivalTime())
 			{
 				temp.setCurrentQuantum(quantum);
+				temp.setState("Listo");
 				ready.addElem(temp);
 				nuevo.removeElem();
 			} else {
@@ -74,13 +75,14 @@ public class CPU implements Runnable{
 		{
 			if(running == null)
 			{
-				running = ready.removeElem();
+			    running = ready.removeElem();
+			    running.setState("CPU");
 			}
-			
+
 			running.setFirstUse(running.getFirstUse() - 1);
 			running.setCurrentQuantum(running.getCurrentQuantum() - 1);
 			
-			if(running.getFirstUse() <= 0)
+			if(running.getFirstUse() < 0)
 			{
 				running.removeFirstUse();
 				if(running.useEmpty())
@@ -108,7 +110,7 @@ public class CPU implements Runnable{
 
 	private void endProcess(Proceso p)
 	{
-		
+		p.setState("Final");
 		p.setFinishTime(timer.getTime());
 		finished.addElem(p);
 		running = null;
@@ -120,6 +122,7 @@ public class CPU implements Runnable{
 		p.setCurrentQuantum(quantum);
 		p.setIOTime(5);
 		p.resetEnvejecimiento();
+		p.setState("Bloqueado");				
 		waiting.addElem(p);
 		running = null;
 	}
@@ -128,6 +131,7 @@ public class CPU implements Runnable{
 	{
 		p.envejecer(-2);
 		p.setCurrentQuantum(quantum);
+		p.setState("Listo");
 		ready.addElem(p);
 		running = null;
 	}

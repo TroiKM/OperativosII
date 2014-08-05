@@ -12,13 +12,15 @@ public class Test {
 	
 	public static void main(String args[]){
 		
-		Colas nuevo = new Colas();
+		Ready nuevo = new Ready();
 		Colas waiting = new Colas();
 		Ready ready = new Ready();
 		Colas finished = new Colas();
-		nuevo.parse("../bash/process_request_file.xml");
+		nuevo.parse("process_request_file.xml");
 		Tick timer = new Tick(nuevo.size());
 
+		System.out.println(nuevo.getQueue());
+		
 			
 		Thread cpu = new Thread(new CPU(timer,ready,waiting,nuevo,finished,4),"CPU");
 		Thread es = new Thread(new ES(timer,waiting,ready,finished),"ES");
@@ -26,10 +28,10 @@ public class Test {
 		es.start();
 		
 		while(finished.size() < timer.getMaxProc()) {
-			System.out.println("-------------- Tiempo " + timer.getTime() +" --------------");
-			
-			System.out.println("----------------------------------------\n");
-			timer.tick();
+		    System.out.println("-------------- Tiempo " + timer.getTime() +" --------------");					
+		    System.out.println("----------------------------------------\n");
+		    timer.tick();
+
 		}
 
 		try{
@@ -48,7 +50,7 @@ public class Test {
 
 		System.out.println("Tiempo promedio de espera: " +
 		getAverageWaitTime(finished,timer));
-
+		
 
 	}
 
