@@ -44,7 +44,11 @@ public class Colas
     } 
     
     public synchronized Proceso removeElem() {
-		return cola.remove();
+		if(!cola.isEmpty()){
+			return cola.remove();
+		}else{
+			return null;
+		}
     }
     
     public synchronized Proceso peekElem(){

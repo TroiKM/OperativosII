@@ -16,14 +16,18 @@ public class Test {
 		Colas waiting = new Colas();
 		Ready ready = new Ready();
 		Colas finished = new Colas();
-		nuevo.parse("../bash/process_request_file.xml");
+		nuevo.parse("process_request_file.xml");
 		Tick timer = new Tick(nuevo.size());
 
 			
-		Thread cpu = new Thread(new CPU(timer,ready,waiting,nuevo,finished,4),"CPU");
-		Thread es = new Thread(new ES(timer,waiting,ready,finished),"ES");
+		Thread cpu = new Thread(new
+		CPU(timer,ready,waiting,nuevo,finished,4),"CPU");
+		
+		Thread es1 = new Thread(new ES(timer,waiting,ready,finished),"ES1");
+		Thread es2 = new Thread(new ES(timer,waiting,ready,finished),"ES2");
 		cpu.start();
-		es.start();
+		es1.start();
+		es2.start();
 		
 		while(finished.size() < timer.getMaxProc()) {
 			System.out.println("-------------- Tiempo " + timer.getTime() +" --------------");
@@ -34,7 +38,8 @@ public class Test {
 
 		try{
 			cpu.join();
-			es.join();
+			es1.join();
+			es2.join();
 		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}

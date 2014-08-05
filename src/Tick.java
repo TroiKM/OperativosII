@@ -10,7 +10,7 @@
 
 public class Tick{
   
-	private static final int MAX_DEVICES = 2;
+	private static final int MAX_DEVICES = 3;
 	private int time;
 	private boolean ok_to_tick;
 	private boolean ok_to_run;

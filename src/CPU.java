@@ -49,7 +49,7 @@ public class CPU implements Runnable{
 		
 	}
 
-	public void newToReady()
+	public synchronized void newToReady()
 	{
 		boolean hayMas = true;
 		
