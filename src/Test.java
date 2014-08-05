@@ -12,26 +12,41 @@ public class Test {
 	
 	public static void main(String args[]){
 
-		if(args.length != 2){
-			System.out.println("Uso: java Test <Quantum> <TiempoIO>");
+		if(args.length != 3){
+			System.out.println("Uso: java Test <Archivo> <Quantum> <TiempoIO>");
 			System.exit(0);
+		}
+
+		int quantum = 0;
+		int IOTime = 0;
+
+      try{
+			quantum = Integer.parseInt(args[1]);
+			IOTime = Integer.parseInt(args[2]);
+		}catch(NumberFormatException e){
+			System.out.println("El quantum o el tiempo de IO introducidos no son numeros");
+			System.exit(1);
+		}
+
+		if(!(quantum > 0 && IOTime > 0)){
+			System.out.println("Tiempo de quantum o IO invalidos");
+			System.exit(1);
 		}
 		
 		Ready nuevo = new Ready();
 		Colas waiting = new Colas();
 		Ready ready = new Ready();
 		Colas finished = new Colas();
-		nuevo.parse("process_request_file.xml");
+		nuevo.parse(args[0]);
 		Tick timer = new Tick(nuevo.size());
 
 		System.out.println(nuevo.getQueue());
 		
 			
 		Thread cpu = new Thread(new
-		CPU(timer,ready,waiting,nuevo,finished,Integer.parseInt(args[0])),"CPU");
+		CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU");
 
-		Thread es = new Thread(new
-		ES(timer,waiting,ready,finished,Integer.parseInt(args[1])),"ES");
+		Thread es = new Thread(new ES(timer,waiting,ready,finished,IOTime),"ES");
 
 		cpu.start();
 		es.start();

@@ -56,7 +56,8 @@ public class Ready extends Colas{
 		} catch(SAXException se){
 			se.printStackTrace();
 		} catch(IOException ioe){
-			ioe.printStackTrace();
+			System.out.println("ERROR: No existe el archivo");
+			System.exit(1);
 		}
 
 		Element docEle = document.getDocumentElement();
