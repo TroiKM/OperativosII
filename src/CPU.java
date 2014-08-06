@@ -51,7 +51,9 @@ public class CPU implements Runnable{
 	{
 
 	    while(finished.size() < timer.getMaxProc())
+//	    do
 	    {
+//		System.out.println(this.numb + ":waiting" );
 		timer.startJob();
 		addCounter();
 		newToReady();
@@ -59,8 +61,12 @@ public class CPU implements Runnable{
 		processReady();
 		ageProcesses();
 		lessCounter();
+//		System.out.println(this.numb + ":lessCounter" );
 		timer.endJob();
-	    }
+	    };
+	    
+
+	    System.out.println(this.numb + ":end" );
 		
 	}
 
@@ -116,6 +122,8 @@ public class CPU implements Runnable{
         
     public void processReady()
 	{
+	    System.out.println(this.numb + ": " +running);
+	    
 	    if(this.running!=null){
 				
 		this.running.setFirstUse(this.running.getFirstUse() - 1);

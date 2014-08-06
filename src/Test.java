@@ -47,15 +47,23 @@ public class Test {
 					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU0");
 		Thread cpu1 = new Thread(new
 					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU1");
+		Thread cpu2 = new Thread(new
+					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU2");
+		Thread cpu3 = new Thread(new
+					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU3");
 
 
 		Thread es = new Thread(new ES(timer,waiting,ready,finished,IOTime),"ES");
 		
 		cpu.setName("CPU0");
 		cpu1.setName("CPU1");
+		cpu2.setName("CPU2");
+		cpu3.setName("CPU3");
 		
 		cpu.start();
-		cpu1.start();
+//		cpu1.start();
+//		cpu2.start();
+		// cpu3.start();
 			
 		es.start();
 		
