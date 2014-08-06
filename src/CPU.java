@@ -51,8 +51,8 @@ public class CPU implements Runnable{
     public void run()
 	{
 
-	    while(finished.size() < timer.getMaxProc())
-//	    do
+//	    while(finished.size() < timer.getMaxProc())
+	    while(timer.getEnd())
 	    {
 //		System.out.println(this.numb + ":waiting" );
 		timer.startJob();
@@ -63,7 +63,7 @@ public class CPU implements Runnable{
 		ageProcesses(this);
 		lessCounter(this);
 //		System.out.println(this.numb + ":lessCounter" );
-		timer.endJob(this.numb);
+		timer.endJob(this.numb,finished);
 //		System.out.println(this.numb + ":end" );
 	    };
 	    

@@ -35,11 +35,12 @@ public class ES implements Runnable {
 	*/
 	public void run(){
  
-	    while(finished.size() < timer.getMaxProc())
+//	    while(finished.size() < timer.getMaxProc())
+	    while(timer.getEnd())
 	    {
 			timer.startJob();
 			processWaiting();
-			timer.endJob(-1);
+			timer.endJob(-1,finished);
 //			System.out.println("ES :end" );
 
 	    }

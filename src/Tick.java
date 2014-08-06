@@ -15,8 +15,10 @@ public class Tick{
 	private boolean ok_to_tick;
 	private boolean ok_to_run;
 	private int finished;
-	private int numProc;
+    private int numProc;
 
+    private boolean ok_to_while;
+    
 	/**
 	* Constructor del Tick
 	* @return Objeto Tick. Inicializa el thread del reloj
@@ -27,9 +29,17 @@ public class Tick{
 		ok_to_run = true;
 		finished = MAX_DEVICES;
 		numProc = n;
+		ok_to_while = true;
+		
 		//finished = 0;
 	}
 
+    public boolean getEnd()
+	{
+	    return ok_to_while;
+	}
+    
+    
 	/**
 	* getTime: Obtiene el tiempo del manejador
 	* @return Tiempo actual
@@ -79,7 +89,7 @@ public class Tick{
 	/**
 	* endJob: Termina un manejador
 	*/
-	public synchronized void endJob(int i){
+    public synchronized void endJob(int i, Colas owari){
 	    finished--;
 	    System.out.println(i+" = "+finished);
 	    
@@ -87,6 +97,9 @@ public class Tick{
 		{
 			ok_to_tick = true;
 			ok_to_run = false;
+
+			ok_to_while = owari.size() < this.getMaxProc();
+						
 			notifyAll();
 		}else
 		{
