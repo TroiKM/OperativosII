@@ -61,7 +61,7 @@ public class Test {
 		cpu3.setName("CPU3");
 		
 		cpu.start();
-//		cpu1.start();
+		cpu1.start();
 //		cpu2.start();
 		// cpu3.start();
 			

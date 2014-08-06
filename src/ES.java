@@ -39,8 +39,12 @@ public class ES implements Runnable {
 	    {
 			timer.startJob();
 			processWaiting();
-			timer.endJob();
-		}
+			timer.endJob(-1);
+//			System.out.println("ES :end" );
+
+	    }
+	    System.out.println("-1:endOut" );
+
 	}
 
 	/**

@@ -23,7 +23,8 @@ public class CPU implements Runnable{
 
     private static int num_cpu = 0;
     private static int num = 0;
-
+    private boolean ok_to_end;
+    
         
     /**
      * Constructor de CPU. Corre El hilo
@@ -55,37 +56,38 @@ public class CPU implements Runnable{
 	    {
 //		System.out.println(this.numb + ":waiting" );
 		timer.startJob();
-		addCounter();
-		newToReady();
-		getRunning();
+		addCounter(this);
+		CPU.newToReady(this);
+		getRunning(this);
 		processReady();
-		ageProcesses();
-		lessCounter();
+		ageProcesses(this);
+		lessCounter(this);
 //		System.out.println(this.numb + ":lessCounter" );
-		timer.endJob();
+		timer.endJob(this.numb);
+//		System.out.println(this.numb + ":end" );
 	    };
 	    
 
-	    System.out.println(this.numb + ":end" );
+	    System.out.println(this.numb + ":endOut" );
 		
 	}
 
-    public synchronized void newToReady()
+    public static synchronized void newToReady(CPU c)
 	{
-	    if(this.position==0){
+	    if(c.position==0){
 		
 		boolean hayMas = true;
 		
-		while(!nuevo.isEmpty() && hayMas)
+		while(!c.nuevo.isEmpty() && hayMas)
 		{
-		    Proceso temp = nuevo.peekElem();
+		    Proceso temp = c.nuevo.peekElem();
 			
-		    if(timer.getTime() >= temp.getArrivalTime())
+		    if(c.timer.getTime() >= temp.getArrivalTime())
 		    {
-			temp.setCurrentQuantum(quantum);
+			temp.setCurrentQuantum(c.quantum);
 			temp.setState("Listo");
-			ready.addElem(temp);
-			nuevo.removeElem();
+			c.ready.addElem(temp);
+			c.nuevo.removeElem();
 		    } else {
 			hayMas = false;
 		    }
@@ -94,29 +96,44 @@ public class CPU implements Runnable{
 
 	}
 
-    public synchronized void addCounter()
+    public static synchronized void addCounter(CPU c)
 	{
-	    this.position = num_cpu;
+	    c.position = num_cpu;
 	    num_cpu++;
+	    
 	}
     
     
-    public synchronized void lessCounter()
+    public static synchronized void lessCounter(CPU c)
 	{
 	    num_cpu--;
-	    this.position = 0;
+	    c.position = 0;
+	    // if(num_cpu==0){
+	    // 	System.out.println("Notify: "+num_cpu);	    
+	    // 	notifyAll();
+	    // }else{
+	    // 	try{
+	    // 	    System.out.println("Waiting: "+num_cpu);	    
+	    // 	    wait();
+	    // 	}catch(IllegalMonitorStateException | InterruptedException e){
+	    // 	    e.printStackTrace();
+	    // 	    System.exit(-1);
+	    // 	}
+	    // }
 	}
 
-    public synchronized void getRunning()
+    public static synchronized void getRunning(CPU c)
 	{
-	    if(!ready.isEmpty() && this.running==null)
+//	    System.out.println(c.numb + ":getRun In" );
+	    if(!c.ready.isEmpty() && c.running==null)
 	    {
-		this.running = ready.removeElem();
-		if(this.running!=null){
-		    this.running.setState("CPU");
+		c.running = c.ready.removeElem();
+		if(c.running!=null){
+		    c.running.setState("CPU_"+c.numb);
 		}
 		
 	    }
+//	    System.out.println(c.numb + ":getRun Out" );
 	}
     
         
@@ -147,11 +164,11 @@ public class CPU implements Runnable{
 	    }
 	}
 
-    public synchronized void ageProcesses()
+    public static synchronized void ageProcesses(CPU c)
 	{
-	    if(this.position==0){
-		ready.envejecer(1);
-		ready.incrementarEspera();
+	    if(c.position==0){
+		c.ready.envejecer(1);
+		c.ready.incrementarEspera();
 	    }
 	    
 	}

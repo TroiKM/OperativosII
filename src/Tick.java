@@ -10,7 +10,7 @@
 
 public class Tick{
   
-	private static final int MAX_DEVICES = 2;
+	private static final int MAX_DEVICES = 3;
 	private int time;
 	private boolean ok_to_tick;
 	private boolean ok_to_run;
@@ -79,8 +79,10 @@ public class Tick{
 	/**
 	* endJob: Termina un manejador
 	*/
-	public synchronized void endJob(){
-		finished--;
+	public synchronized void endJob(int i){
+	    finished--;
+	    System.out.println(i+" = "+finished);
+	    
 		if(finished == 0)
 		{
 			ok_to_tick = true;
