@@ -7,8 +7,6 @@
 */
 
 public class Test {
-
-	public static int ocio = 0;
 	
 	public static void main(String args[]){
 
@@ -42,23 +40,21 @@ public class Test {
 
 		System.out.println(nuevo.getQueue());
 		
-			
-		Thread cpu = new Thread(new
-					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU0");
-		Thread cpu1 = new Thread(new
-					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU1");
-		Thread cpu2 = new Thread(new
-					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU2");
-		Thread cpu3 = new Thread(new
-					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU3");
+	
+	   CPU c = new CPU(timer,ready,waiting,nuevo,finished,quantum);
+		Thread cpu = new Thread(c,"CPU0");
+
+		CPU c1 = new CPU(timer,ready,waiting,nuevo,finished,quantum);
+		Thread cpu1 = new Thread(c1,"CPU1");
+
+		CPU c2 = new CPU(timer,ready,waiting,nuevo,finished,quantum);
+		Thread cpu2 = new Thread(c2,"CPU2");
+
+		CPU c3 = new CPU(timer,ready,waiting,nuevo,finished,quantum);
+		Thread cpu3 = new Thread(c3,"CPU3");
 
 
 		Thread es = new Thread(new ES(timer,waiting,ready,finished,IOTime),"ES");
-		
-		cpu.setName("CPU0");
-		cpu1.setName("CPU1");
-		cpu2.setName("CPU2");
-		//cpu3.setName("CPU3");
 		
 		cpu.start();
 		cpu1.start();
@@ -80,9 +76,9 @@ public class Test {
 			e.printStackTrace();
 		}
 		
-		ocio = ((ocio * 100)/ timer.getTime());
-		
-		System.out.println("% Ocio de CPU: " + ocio + "%.");
+		c.printIdlePercentage();
+		c1.printIdlePercentage();
+		c2.printIdlePercentage();
 
 		System.out.println("Tiempo promedio de ejecucion: " + 
 		getAverageRunningTime(finished,timer));

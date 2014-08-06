@@ -19,6 +19,7 @@ public class CPU implements Runnable{
 	private int quantum;
 	private int position;
 	private int numb;
+	private int ocio;
 	private static int num_cpu = 0;
 	private static int num = 0;
     
@@ -34,6 +35,7 @@ public class CPU implements Runnable{
 		finished = f;
 		quantum = q;
 		running = null;
+		ocio = 0;
 		numb = num;
 		num++;
 	}
@@ -122,7 +124,7 @@ public class CPU implements Runnable{
 			}
 		
 		} else {
-			++Test.ocio;
+			++ocio;
 		}
 	}
 
@@ -132,6 +134,11 @@ public class CPU implements Runnable{
 			c.ready.envejecer(1);
 			c.ready.incrementarEspera();
 		}
+	}
+
+	public void printIdlePercentage(){
+		System.out.println("Ocio del CPU " + numb + ": " + (ocio*100) /
+		timer.getTime() + "%");
 	}
 
 	private void endProcess(Proceso p){
