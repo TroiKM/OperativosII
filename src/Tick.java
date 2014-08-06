@@ -10,7 +10,7 @@
 
 public class Tick{
   
-	private static final int MAX_DEVICES = 2;
+	private static final int MAX_DEVICES = 3;
 	private int time;
 	private boolean ok_to_tick;
 	private boolean ok_to_run;
@@ -55,7 +55,11 @@ public class Tick{
 		ok_to_tick = false;
 		//    finished = 0;
 		finished = MAX_DEVICES;
+
+
 		System.out.println(Proceso.all);
+
+
 		notifyAll();
 	}
 

@@ -44,11 +44,19 @@ public class Test {
 		
 			
 		Thread cpu = new Thread(new
-		CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU");
+					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU0");
+		Thread cpu1 = new Thread(new
+					CPU(timer,ready,waiting,nuevo,finished,quantum),"CPU1");
+
 
 		Thread es = new Thread(new ES(timer,waiting,ready,finished,IOTime),"ES");
-
+		
+		cpu.setName("CPU0");
+		cpu1.setName("CPU1");
+		
 		cpu.start();
+		cpu1.start();
+			
 		es.start();
 		
 		while(finished.size() < timer.getMaxProc()) {
