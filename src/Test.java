@@ -100,7 +100,7 @@ public class Test {
 
 		for(Proceso p: f.getQueue())
 		{
-			totalTime += p.getWaitTime();
+			totalTime += p.getWaitTime() - p.getArrivalTime();
 		}
 
 		return totalTime/t.getMaxProc();

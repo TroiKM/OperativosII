@@ -34,7 +34,6 @@ public class ES implements Runnable {
 	* Run: Metodo de hilo
 	*/
 	public void run(){
- 
 //	    while(finished.size() < timer.getMaxProc())
 	    while(timer.getEnd())
 	    {
@@ -58,7 +57,6 @@ public class ES implements Runnable {
 			if(temp.getIOTime() <= 0)
 			{
 				temp.setState("Listo");
-			   
 				ready.addElem(temp);
 				waiting.removeElem();
 			}
