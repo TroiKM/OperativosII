@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class Tick{
   
-  private static final int MAX_DEVICES = 4;
+  private int MAX_DEVICES;
   private int time;
   private boolean ok_to_tick;
   private boolean ok_to_run;
@@ -24,10 +24,11 @@ public class Tick{
 	 * Constructor del Tick
 	 * @return Objeto Tick. Inicializa el thread del reloj
 	 **/
-	public Tick(int n){
+	public Tick(int n, int c){
 		time = 0;
 		ok_to_tick = false;
 		ok_to_run = true;
+		MAX_DEVICES = c;
 		finished = MAX_DEVICES;
 		numProc = n;
 		ok_to_while = true;
@@ -113,6 +114,11 @@ public class Tick{
 	
 	public int getMaxProc(){
 		return numProc;
+	}
+
+	public synchronized void  endAll(){
+		finished = 0;
+		notifyAll();
 	}
 
 }
