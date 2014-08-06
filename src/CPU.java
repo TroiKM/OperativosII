@@ -40,8 +40,7 @@ public class CPU implements Runnable{
 	    quantum = q;
 	    running = null;
 	    numb = num;
-	    num++;
-	    
+	    num++;  
 	}
     
 	
@@ -54,21 +53,15 @@ public class CPU implements Runnable{
 //	    while(finished.size() < timer.getMaxProc())
 	    while(timer.getEnd())
 	    {
-//		System.out.println(this.numb + ":waiting" );
-		timer.startJob();
-		addCounter(this);
-		CPU.newToReady(this);
-		getRunning(this);
-		processReady();
-		ageProcesses(this);
-		lessCounter(this);
-//		System.out.println(this.numb + ":lessCounter" );
-		timer.endJob(this.numb,finished);
-//		System.out.println(this.numb + ":end" );
+			timer.startJob();
+			addCounter(this);
+			CPU.newToReady(this);
+			getRunning(this);
+			processReady();
+			ageProcesses(this);
+			lessCounter(this);
+			timer.endJob(this.numb,finished);
 	    };
-	    
-
-	    System.out.println(this.numb + ":endOut" );
 		
 	}
 
@@ -84,12 +77,12 @@ public class CPU implements Runnable{
 			
 		    if(c.timer.getTime() >= temp.getArrivalTime())
 		    {
-			temp.setCurrentQuantum(c.quantum);
-			temp.setState("Listo");
-			c.ready.addElem(temp);
-			c.nuevo.removeElem();
+				temp.setCurrentQuantum(c.quantum);
+				temp.setState("Listo");
+				c.ready.addElem(temp);
+				c.nuevo.removeElem();
 		    } else {
-			hayMas = false;
+				hayMas = false;
 		    }
 		} 
 	    }
@@ -106,20 +99,8 @@ public class CPU implements Runnable{
     
     public static synchronized void lessCounter(CPU c)
 	{
-	    num_cpu--;
-	    c.position = 0;
-	    // if(num_cpu==0){
-	    // 	System.out.println("Notify: "+num_cpu);	    
-	    // 	notifyAll();
-	    // }else{
-	    // 	try{
-	    // 	    System.out.println("Waiting: "+num_cpu);	    
-	    // 	    wait();
-	    // 	}catch(IllegalMonitorStateException | InterruptedException e){
-	    // 	    e.printStackTrace();
-	    // 	    System.exit(-1);
-	    // 	}
-	    // }
+		num_cpu--;
+		c.position = 0;
 	}
 
     public static synchronized void getRunning(CPU c)
@@ -133,14 +114,12 @@ public class CPU implements Runnable{
 		}
 		
 	    }
-//	    System.out.println(c.numb + ":getRun Out" );
 	}
     
         
     public void processReady()
 	{
-	    System.out.println(this.numb + ": " +running);
-	    
+	   
 	    if(this.running!=null){
 				
 		this.running.setFirstUse(this.running.getFirstUse() - 1);
@@ -160,15 +139,15 @@ public class CPU implements Runnable{
 		    reinsertProcess(this.running);
 		}
 	    } else {
-		++Test.ocio;
+			++Test.ocio;
 	    }
 	}
 
     public static synchronized void ageProcesses(CPU c)
 	{
 	    if(c.position==0){
-		c.ready.envejecer(1);
-		c.ready.incrementarEspera();
+			c.ready.envejecer(1);
+			c.ready.incrementarEspera();
 	    }
 	    
 	}

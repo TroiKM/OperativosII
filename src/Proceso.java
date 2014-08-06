@@ -165,14 +165,8 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 	* @return String con la informacion del proceso
 	**/
 	public String toString(){
-		return "\nProceso " + Integer.toString(this.PID)
-		    +":\tPriority: " + Integer.toString(this.priority)
-		    +":\tEnvejecimiento: " + Integer.toString(this.envejecimiento)
-		    +":\tArrivalTime: " + Integer.toString(this.arrivalTime)
-		    + "\tState: "+this.state
-		    + "\tState: "+ this.resourceUse
-		    + "\tQuantum: "+Integer.toString(this.currentQuantum)+"\n";
-
+		return "\n" + Integer.toString(this.PID) + "\t|"
+		    + "\t"+this.state;
 	}
 	
     @Override
@@ -188,14 +182,10 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
     }
     
     public int compare(Proceso p, Proceso p1){
-	if(p.state.compareTo("Nuevo")==0){
-	    return p1.arrivalTime - p.arrivalTime;
-	}else{
-	    return p1.priority + p1.envejecimiento - p.priority - p.envejecimiento;
-	}
-		    	
+		if(p.state.compareTo("Nuevo")==0){
+			return p1.arrivalTime - p.arrivalTime;
+		}else{
+			return p1.priority + p1.envejecimiento - p.priority - p.envejecimiento;
+		}
     }
-
-    
-    
 }
