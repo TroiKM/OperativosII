@@ -45,9 +45,9 @@ public class CPU implements Runnable{
 	 * Run: Metodo de Hilo
 	 **/
 	public void run(){
-		//while(finished.size() < timer.getMaxProc())
+
 		while(timer.getEnd()){
-			//System.out.println(this.numb + ":waiting" );
+		
 			timer.startJob();
 			addCounter(this);
 			CPU.newToReady(this);
@@ -56,6 +56,7 @@ public class CPU implements Runnable{
 			ageProcesses(this);
 			lessCounter(this);
 			timer.endJob(this.numb,finished);
+			
 		}
 	}
 
@@ -90,7 +91,7 @@ public class CPU implements Runnable{
 	}
 
 	public static synchronized void getRunning(CPU c){
-		//System.out.println(c.numb + ":getRun In" );
+	
 		if(!c.ready.isEmpty() && c.running==null)
 		{
 			c.running = c.ready.removeElem();
@@ -98,11 +99,9 @@ public class CPU implements Runnable{
 					c.running.setState("CPU_"+c.numb);
 				}
 		}
-		//System.out.println(c.numb + ":getRun Out" );
 	}
          
 	public void processReady(){
-		//System.out.println(this.numb + ": " +running);
 		
 		if(this.running!=null){
 				

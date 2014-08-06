@@ -30,7 +30,7 @@ public class Colas
     }
 	
     public synchronized void addElem(Proceso p){
-	cola.add(p);
+		cola.add(p);
     } 
     
     public synchronized Proceso removeElem() {

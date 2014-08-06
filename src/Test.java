@@ -59,7 +59,6 @@ public class Test {
 		cpu.start();
 		cpu1.start();
 		cpu2.start();
-		// cpu3.start();
 			
 		es.start();
 		
