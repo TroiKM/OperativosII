@@ -8,9 +8,11 @@
 * @param time: Tiempo que lleva el manejador
 */
 
+import java.util.Scanner;
+
 public class Tick{
   
-	private static final int MAX_DEVICES = 3;
+	private static final int MAX_DEVICES = 4;
 	private int time;
 	private boolean ok_to_tick;
 	private boolean ok_to_run;
@@ -31,7 +33,6 @@ public class Tick{
 		numProc = n;
 		ok_to_while = true;
 		
-		//finished = 0;
 	}
 
     public boolean getEnd()
@@ -65,11 +66,15 @@ public class Tick{
 		ok_to_tick = false;
 		//    finished = 0;
 		finished = MAX_DEVICES;
-
-
-		System.out.println(Proceso.all);
-
-
+		
+		if ( ((time % 5) == 0) ){
+			System.out.println("-------------- Tiempo " + time +" --------------");
+			System.out.println("Proceso\t|\tEstado");
+			System.out.println(Proceso.all);
+			System.out.println("Press enter to continue...");
+			Scanner keyboard = new Scanner(System.in);
+			keyboard.nextLine();
+		}
 		notifyAll();
 	}
 
@@ -91,15 +96,14 @@ public class Tick{
 	*/
     public synchronized void endJob(int i, Colas owari){
 	    finished--;
-	    System.out.println(i+" = "+finished);
 	    
 		if(finished == 0)
 		{
 			ok_to_tick = true;
 			ok_to_run = false;
-
+			
 			ok_to_while = owari.size() < this.getMaxProc();
-						
+			
 			notifyAll();
 		}else
 		{
@@ -110,22 +114,6 @@ public class Tick{
 			}
 		}
 		
-		
-	// if(finished != MAX_DEVICES){
-	//   while(finished != MAX_DEVICES){
-	//     try{
-	//       wait();
-	//     }catch(InterruptedException e){
-	//       e.printStackTrace();
-	//     }
-	//   }
-		
-	// }else{
-	//   ok_to_tick = true;
-	//   ok_to_run = false;
-		
-	//   notifyAll();
-	// }
 	}
 	
 	public int getMaxProc(){

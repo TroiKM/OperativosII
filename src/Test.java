@@ -58,7 +58,7 @@ public class Test {
 		cpu.setName("CPU0");
 		cpu1.setName("CPU1");
 		cpu2.setName("CPU2");
-		cpu3.setName("CPU3");
+		//cpu3.setName("CPU3");
 		
 		cpu.start();
 		cpu1.start();
@@ -68,10 +68,7 @@ public class Test {
 		es.start();
 		
 		while(finished.size() < timer.getMaxProc()) {
-		    System.out.println("-------------- Tiempo " + timer.getTime() +" --------------");					
-		    System.out.println("----------------------------------------\n");
 		    timer.tick();
-
 		}
 
 		try{

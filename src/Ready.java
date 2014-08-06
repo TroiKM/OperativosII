@@ -105,32 +105,10 @@ public class Ready extends Colas{
 					}
 				}
 				
-
 				this.addElem(process);
-
-				// if(!dummy.isEmpty()){
-				//     int k = 0;
-				//     bool out = true;
-				//     Proceso dummyp = dummy.get(k);
-				//     while(out && k < dummy.size()){
-				// 	if(dummyp.getArrivalTime()
-				// 	   > process.getArrivalTime()){
-				// 	    dummy.add(process);
-				// 	    out = !out;
-				// 	}else{
-				// 	    k++;
-				// 	}
-				//     }
-				    
-				    
-				
-			
 				
 			}
 		}
-//		System.out.println(this.cola);
-		
-//		this.cola = new LinkedList(dummy);
 		
     }
 	

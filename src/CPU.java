@@ -22,7 +22,6 @@ public class CPU implements Runnable{
 	private static int num_cpu = 0;
 	private static int num = 0;
     
-        
 	/**
 	 * Constructor de CPU. Corre El hilo
 	 * @param t: Tick a asignar al CPU
@@ -54,14 +53,8 @@ public class CPU implements Runnable{
 			processReady();
 			ageProcesses(this);
 			lessCounter(this);
-			System.out.println(this.numb + ":lessCounter" );
 			timer.endJob(this.numb,finished);
-			//System.out.println(this.numb + ":end" );
-	    };
-	    
-
-	    System.out.println(this.numb + ":endOut" );
-		
+		}
 	}
 
 	public static synchronized void newToReady(CPU c){
@@ -89,22 +82,9 @@ public class CPU implements Runnable{
 		num_cpu++;
 	}
     
-    
 	public static synchronized void lessCounter(CPU c){
 		num_cpu--;
 		c.position = 0;
-		// if(num_cpu==0){
-		// 	System.out.println("Notify: "+num_cpu);	    
-		// 	notifyAll();
-		// }else{
-		// 	try{
-		// 	    System.out.println("Waiting: "+num_cpu);	    
-		// 	    wait();
-		// 	}catch(IllegalMonitorStateException | InterruptedException e){
-		// 	    e.printStackTrace();
-		// 	    System.exit(-1);
-		// 	}
-		// }
 	}
 
 	public static synchronized void getRunning(CPU c){
