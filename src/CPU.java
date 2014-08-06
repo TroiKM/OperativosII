@@ -47,7 +47,7 @@ public class CPU implements Runnable{
 	public void run(){
 		//while(finished.size() < timer.getMaxProc())
 		while(timer.getEnd()){
-			System.out.println(this.numb + ":waiting" );
+			//System.out.println(this.numb + ":waiting" );
 			timer.startJob();
 			addCounter(this);
 			CPU.newToReady(this);
@@ -102,7 +102,7 @@ public class CPU implements Runnable{
 	}
          
 	public void processReady(){
-		System.out.println(this.numb + ": " +running);
+		//System.out.println(this.numb + ": " +running);
 		
 		if(this.running!=null){
 				
