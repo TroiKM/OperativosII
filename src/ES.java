@@ -42,7 +42,6 @@ public class ES implements Runnable {
 			processWaiting();
 			timer.endJob(-1,finished);
 	    }
-		 timer.endAll();
 	}
 
 	/**

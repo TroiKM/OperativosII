@@ -57,7 +57,6 @@ public class CPU implements Runnable{
 			lessCounter(this);
 			timer.endJob(this.numb,finished);
 		}
-		timer.endAll();
 	}
 
 	public static synchronized void newToReady(CPU c){

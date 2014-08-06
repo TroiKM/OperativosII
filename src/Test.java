@@ -41,7 +41,7 @@ public class Test {
 		Ready ready = new Ready();
 		Colas finished = new Colas();
 		nuevo.parse(args[0]);
-		Tick timer = new Tick(nuevo.size(),numCPUs);
+		Tick timer = new Tick(nuevo.size(),numCPUs+1);
 
 		System.out.println(nuevo.getQueue());
 
