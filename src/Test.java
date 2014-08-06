@@ -62,7 +62,7 @@ public class Test {
 		
 		cpu.start();
 		cpu1.start();
-//		cpu2.start();
+		cpu2.start();
 		// cpu3.start();
 			
 		es.start();
@@ -76,6 +76,8 @@ public class Test {
 
 		try{
 			cpu.join();
+			cpu1.join();
+			cpu2.join();
 			es.join();
 		} catch(InterruptedException e) {
 			e.printStackTrace();
