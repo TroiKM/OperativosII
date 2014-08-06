@@ -62,7 +62,6 @@ public class Tick{
 		time++;
 		ok_to_run = true;
 		ok_to_tick = false;
-		// finished = 0;
 		finished = MAX_DEVICES;
 		
 		if ( ((time % 5) == 0) ){
@@ -75,7 +74,6 @@ public class Tick{
 		}
 		notifyAll();
 	}
-
 	/**
 	 * startJob: Inicializa un manejador
 	 **/

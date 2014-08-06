@@ -74,16 +74,21 @@ public class Test {
 		} catch(InterruptedException e) {
 			e.printStackTrace();
 		}
+
+		System.out.println("-------------- Tiempo final:" + timer.getTime() +" --------------");
+		System.out.println("Proceso\t|\tTiempo final");
+		System.out.println(Proceso.all);
 		
 		c.printIdlePercentage();
 		c1.printIdlePercentage();
 		c2.printIdlePercentage();
-
+		
 		System.out.println("Tiempo promedio de ejecucion: " + 
 		getAverageRunningTime(finished,timer));
 
 		System.out.println("Tiempo promedio de espera: " +
 		getAverageWaitTime(finished,timer));
+		
 		
 
 	}

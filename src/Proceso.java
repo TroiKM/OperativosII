@@ -165,8 +165,17 @@ public class Proceso implements Comparator<Proceso>, Comparable<Proceso> {
 	* @return String con la informacion del proceso
 	**/
 	public String toString(){
-		return "\n" + Integer.toString(this.PID) + "\t|"
-		    + "\t"+this.state;
+	
+		String print = "\n" + Integer.toString(this.PID) + "\t|"
+		+ "\t"+this.state;
+		
+		if (this.state.compareTo("Final")==0) 
+		{
+			return "\n" + Integer.toString(this.PID) + "\t|"
+		    + "\t\t"+this.finishTime;
+		}
+		
+		return print;
 	}
 	
     @Override
