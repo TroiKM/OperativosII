@@ -12,19 +12,18 @@ import java.util.Scanner;
 
 public class Tick{
   
-	private static final int MAX_DEVICES = 4;
-	private int time;
-	private boolean ok_to_tick;
-	private boolean ok_to_run;
-	private int finished;
-    private int numProc;
-
-    private boolean ok_to_while;
+  private static final int MAX_DEVICES = 4;
+  private int time;
+  private boolean ok_to_tick;
+  private boolean ok_to_run;
+  private int finished;
+  private int numProc;
+  private boolean ok_to_while;
     
 	/**
-	* Constructor del Tick
-	* @return Objeto Tick. Inicializa el thread del reloj
-	*/
+	 * Constructor del Tick
+	 * @return Objeto Tick. Inicializa el thread del reloj
+	 **/
 	public Tick(int n){
 		time = 0;
 		ok_to_tick = false;
@@ -32,26 +31,24 @@ public class Tick{
 		finished = MAX_DEVICES;
 		numProc = n;
 		ok_to_while = true;
-		
 	}
 
-    public boolean getEnd()
-	{
-	    return ok_to_while;
+	public boolean getEnd(){
+		return ok_to_while;
 	}
     
     
 	/**
-	* getTime: Obtiene el tiempo del manejador
-	* @return Tiempo actual
-	*/
+	 * getTime: Obtiene el tiempo del manejador
+	 * @return Tiempo actual
+	 **/
 	public synchronized int getTime(){
 		return time;
 	}
 
 	/**
-	* Tick: Hace el tick
-	*/
+	 * Tick: Hace el tick
+	 **/
 	public synchronized void tick(){
 		while(!ok_to_tick){
 			try{
@@ -61,10 +58,11 @@ public class Tick{
 				System.exit(-1);
 			}
 		}
+
 		time++;
 		ok_to_run = true;
 		ok_to_tick = false;
-		//    finished = 0;
+		// finished = 0;
 		finished = MAX_DEVICES;
 		
 		if ( ((time % 5) == 0) ){
@@ -79,8 +77,8 @@ public class Tick{
 	}
 
 	/**
-	* startJob: Inicializa un manejador
-	*/
+	 * startJob: Inicializa un manejador
+	 **/
 	public synchronized void startJob(){
 		while(!ok_to_run){
 			try{
@@ -92,32 +90,29 @@ public class Tick{
 	}
 
 	/**
-	* endJob: Termina un manejador
-	*/
-    public synchronized void endJob(int i, Colas owari){
-	    finished--;
-	    
+	 * endJob: Termina un manejador
+	 **/
+	public synchronized void endJob(int i, Colas owari){
+		finished--;
+		
 		if(finished == 0)
 		{
 			ok_to_tick = true;
 			ok_to_run = false;
-			
 			ok_to_while = owari.size() < this.getMaxProc();
 			
 			notifyAll();
-		}else
-		{
+		}else{
 			try{
 				wait();
 			}catch(InterruptedException e){
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	public int getMaxProc(){
 		return numProc;
 	}
-	
+
 }
