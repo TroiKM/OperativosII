@@ -1,0 +1,6 @@
+rls
+lls
+sub archivo
+baj archivo
+bor archivo
+info

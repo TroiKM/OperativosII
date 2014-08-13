@@ -1,0 +1,55 @@
+Troiano, Karen 	09-10855
+Vazquez, Yeiker	09-10882
+
+16 de enero de 2014
+
+
+1. Esquema
+	Se utiliza el esquema de programación cliente/servidor utilizando
+	mecanismos de invocación remota de métodos (RMI).
+
+2. Decisiones de diseño
+	- Cuando ocurren errores de autenticacion, no se encuentra un archivo
+	de los necesitados en invocacion de alguno de los programas se aborta
+	la ejecucion.
+	- En el log se listan los registros de forma ascendente comenzando a partir
+	del mas antiguo al mas reciente, igualmente se muestra la hora para una mejor
+	guia.
+
+3. Observaciones
+	- Si alguno de los servidores deja de funciona, su cliente no informara al
+	respecto de forma inmediata, sino hasta que intente utilizar alguno de sus
+	servicios.
+	- Se asume que  el archivo de usuarios que recibe el programa c_rmifs.java
+	solamente posee una linea con el nombre y clave del usuario.
+
+4. Compilacion del proyecto
+	Para compilar el proyecto se debe hacer la instruccion make.
+	Esto hara la compilacion mediante el comando javac de los archivos:
+		- c_rmifs.java
+		- s_rmifs.java
+		- a_rmifs.java
+	
+	Los cuales a su vez por relaciones de dependencia compilaran a:
+		-Autenticacion.java: interfaz que permite los servicios de autenticacion
+			entre el servidor de archivos y el servidor de autenticacion.
+		-AutenticacionImpl.java: implementa a la interfaz Autenticacion.java.
+		-Servicios.java: interfaz que permite los diversos servicios necesarios
+			entre el servidor de archivos y el cliente.
+		-ServiciosImpl.java: implementa la interfaz Servicios.java.
+
+5. Ejecucion del proyecto:
+	El orden correcto de invocacion es:
+		1) a_rmifs
+		2) s_rmifs
+		3) c_rmifs
+
+	De lo contrario el proyecto notificara los errores de conexion.
+
+	Ademas es importante resaltar que para ejecutar
+		1) a_rmifs se necesita 	Autenticacion.class y AutenticacionImpl.class
+		2) s_rmifs se necesita 	Autenticacion.class, AutenticacionImpl.class, 
+					Servicios.class y ServiciosImpl.class
+		3) c_rmifs se necesita 	Servicios.class y ServiciosImpl.class
+	
+
