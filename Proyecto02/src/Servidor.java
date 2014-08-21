@@ -35,6 +35,17 @@ public class Servidor{
 			e.printStackTrace();
 		}
 
+		Colas<DatagramPacket> x = new Colas<DatagramPacket>();
+		
+		Oyente o = new Oyente(x,socket,BUFFER_SIZE);
+		Trabajador t = new Trabajador(x,socket,BUFFER_SIZE);
+		
+		Thread oye = new Thread(o,"Oyente");
+		Thread tra = new Thread(t,"Trabaj");
+	
+		oye.start();
+		tra.start();
+		
 		System.out.println("Starting the send");
 		byte[] buf = new byte[BUFFER_SIZE];
 		String i = "SERVER";
@@ -45,15 +56,24 @@ public class Servidor{
 			DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
 			socket.send(init);
 
-			System.out.println("Sent");
+			System.out.println("Servidor: send");
 			buf = new byte[BUFFER_SIZE];
-			DatagramPacket rec = new DatagramPacket(buf,buf.length);
-			socket.receive(rec);
-			i = new String(rec.getData(),0,rec.getLength());
-			System.out.println("Received " + i);
+			// DatagramPacket rec = new DatagramPacket(buf,buf.length);
+			// socket.receive(rec);
+			// i = new String(rec.getData(),0,rec.getLength());
+			// System.out.println("Received " + i);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
+
+		try{
+		    oye.join();
+		    tra.join();
+		} catch(InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		
 	}
 
 	public static void main(String args[]){

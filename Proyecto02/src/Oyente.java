@@ -1,45 +1,52 @@
 import java.net.*;
+import java.io.IOException;
+
 
 public class Oyente implements Runnable{
 
     private Colas<DatagramPacket> mensajes;
+    private MulticastSocket socket;
+    private int buffer_size;
         
-    public Oyente(Colas<DatagramPacket> c){
+    public Oyente(Colas<DatagramPacket> c, MulticastSocket s, int b){
 	mensajes = c;
+	socket = s;
+	buffer_size = b;
+	
     }
     
     public void run(){
+	byte[] buf;
+	DatagramPacket rec;
+	
 	while(true){
-	    for(int i=0;i<10;i++){
-		System.out.println("Oyente: "+i);
 
-		byte[] buf = new byte[8];
-		buf = (Integer.toString(i)).getBytes();
-		
-		this.mensajes.addElem(
-		    new DatagramPacket(buf,buf.length));
-		
-	    }
+	    buf = new byte[this.buffer_size];
+	    rec = new DatagramPacket(buf,buf.length);
+
 	    try{
-		System.out.println("Oyente: ZZZ");
-		Thread.sleep(1000);
-	    }catch(InterruptedException ex){
-		Thread.currentThread().interrupt();
+		this.socket.receive(rec);
+		System.out.println("Oyente: receive");
+
+	    } catch(IOException e) {
+		e.printStackTrace();
 	    }
-	    		
+
+	    this.mensajes.addElem(rec);
+			    		
 	}
 	
     }
 
-    public static void main(String args[]){
+    // public static void main(String args[]){
 
-	Colas<DatagramPacket> x = new Colas<DatagramPacket>();
+    // 	Colas<DatagramPacket> x = new Colas<DatagramPacket>();
 	
-	Oyente o = new Oyente(x);
+    // 	Oyente o = new Oyente(x);
 	
-	o.run();
+    // 	o.run();
 
-	System.out.println(o.mensajes.getQueue());
+    // 	System.out.println(o.mensajes.getQueue());
 		
-    }
+    // }
 }
