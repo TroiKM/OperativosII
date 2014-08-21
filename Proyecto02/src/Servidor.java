@@ -42,7 +42,7 @@ public class Servidor{
 
 		try{
 			DatagramPacket init = new
-				DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
+			DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
 			socket.send(init);
 
 			System.out.println("Sent");
@@ -51,10 +51,9 @@ public class Servidor{
 			socket.receive(rec);
 			i = new String(rec.getData(),0,rec.getLength());
 			System.out.println("Received " + i);
-		}catch(IOException e){
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static void main(String args[]){
