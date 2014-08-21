@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.net.*;
 import java.io.*;
 
-public class Servidor{
+public class Servidor implements Runnable{
 
 	private static final int BUFFER_SIZE = 256;
 
@@ -45,15 +45,20 @@ public class Servidor{
 				DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
 			socket.send(init);
 
-			System.out.println("Sent");
 			buf = new byte[BUFFER_SIZE];
 			DatagramPacket rec = new DatagramPacket(buf,buf.length);
 			socket.receive(rec);
 			i = new String(rec.getData(),0,rec.getLength());
-			System.out.println("Received " + i);
+			if(i == "COORD"){
+				info.setTipo("Principal");
+			}
 		}catch(IOException e){
 			e.printStackTrace();
 		}
+
+		//Iniciar hilo de coordinador
+		//Iniciar hilo de escuchar mensajes
+		//Iniciar hilo de ejecucion de instrucciones
 
 	}
 

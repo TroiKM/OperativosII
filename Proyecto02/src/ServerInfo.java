@@ -21,4 +21,12 @@ public class ServerInfo{
 		return nombre;
 	}
 
+	public String getTipo(){
+		return tipo;
+	}
+
+	public void setTipo(String t){
+		tipo = t;
+	}
+
 }
