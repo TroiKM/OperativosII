@@ -42,7 +42,7 @@ public class Servidor implements Runnable{
 
 		try{
 			DatagramPacket init = new
-				DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
+			DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
 			socket.send(init);
 
 			buf = new byte[BUFFER_SIZE];
@@ -59,7 +59,6 @@ public class Servidor implements Runnable{
 		//Iniciar hilo de coordinador
 		//Iniciar hilo de escuchar mensajes
 		//Iniciar hilo de ejecucion de instrucciones
-
 	}
 
 	public static void main(String args[]){
