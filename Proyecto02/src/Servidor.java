@@ -20,6 +20,7 @@ public class Servidor implements Runnable{
 	private InetAddress group;
 	private int puertoDNS;
 	private String dirDNS;
+	private Servicios s;
 
 	public Servidor(String n, int gPort, String g, int dPort, String d){
 		servers = new LinkedList<ServerInfo>();
