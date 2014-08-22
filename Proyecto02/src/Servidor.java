@@ -10,7 +10,7 @@ import java.util.Queue;
 import java.net.*;
 import java.io.*;
 
-public class Servidor implements Runnable{
+public class Servidor{
 
 	private static final int BUFFER_SIZE = 256;
 
@@ -20,7 +20,7 @@ public class Servidor implements Runnable{
 	private InetAddress group;
 	private int puertoDNS;
 	private String dirDNS;
-	private Servicios s;
+	//private Servicios s;
 
 	public Servidor(String n, int gPort, String g, int dPort, String d){
 		servers = new LinkedList<ServerInfo>();
@@ -36,6 +36,13 @@ public class Servidor implements Runnable{
 			e.printStackTrace();
 		}
 
+		Colas<DatagramPacket> x = new Colas<DatagramPacket>();
+		
+		Thread oye = new Thread(new Oyente(x,socket,BUFFER_SIZE),"Oyente");
+		Thread tra = new Thread(new Trabajador(x,socket,BUFFER_SIZE),"Trabaj");
+		oye.start();
+		tra.start();
+		
 		System.out.println("Starting the send");
 		byte[] buf = new byte[BUFFER_SIZE];
 		String i = "SERVER";
@@ -45,21 +52,18 @@ public class Servidor implements Runnable{
 			DatagramPacket init = new
 			DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
 			socket.send(init);
-
+			System.out.println("Servidor: send");
 			buf = new byte[BUFFER_SIZE];
-			DatagramPacket rec = new DatagramPacket(buf,buf.length);
-			socket.receive(rec);
-			i = new String(rec.getData(),0,rec.getLength());
-			if(i == "COORD"){
-				info.setTipo("Principal");
-			}
-		}catch(IOException e){
+		} catch(IOException e) {
 			e.printStackTrace();
 		}
 
-		//Iniciar hilo de coordinador
-		//Iniciar hilo de escuchar mensajes
-		//Iniciar hilo de ejecucion de instrucciones
+		try{
+		    oye.join();
+		    tra.join();
+		} catch(InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String args[]){
