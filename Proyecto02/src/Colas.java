@@ -17,12 +17,14 @@ public class Colas<E>
 {
 	
     Queue<E> cola;
-	
+    int elem;
+    	
     /**
      * Constructor de Colas.
      */
     public Colas() {
 	cola = new LinkedList<E>();
+	elem = 0;
     }
 
     public synchronized Queue<E> getQueue() {
@@ -31,14 +33,23 @@ public class Colas<E>
 	
     public synchronized void addElem(E p){
 	cola.add(p);
+	if(this.elem == 0)
+	    notifyAll();
+	this.elem++;
+	
     } 
     
     public synchronized E removeElem() {
-	if(!cola.isEmpty()){
-	    return cola.remove();
-	}else{
-	    return null;
-	}
+	if(this.elem == 0)
+	    try{
+		wait();
+	    }catch(IllegalMonitorStateException | InterruptedException e){
+		e.printStackTrace();
+		System.exit(-1);
+	    }
+	this.elem--;
+	return cola.remove();
+	
     }
     
     public synchronized E peekElem(){
