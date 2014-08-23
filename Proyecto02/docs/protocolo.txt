@@ -1,0 +1,167 @@
+Protocolo de mensajeria
+
+*SERVER
+	+Significado: Un nuevo servidor ha llegado
+	+Atributos:
+		-Nombre
+		-Tipo
+	+Quien envía: Servidor
+	+Quien recibe: DNS, Servidor
+	+Que hace el que recibe: 
+		-DNS:Devolver un mensaje COORD si es el coordinador o un
+		mensaje OK seguido de la ip del coordinador si no
+		-Servidor: Actualizar su lista con el nuevo servidor
+*COORD
+	+Significado: Designacion de coordinador
+	+Atributos: Ninguno
+	+Quien envía: DNS
+	+Quien recibe: Servidor
+	+Que hace el que recibe: Se setea a si mismo como coordinador
+*OK
+	+Significado: ACK de recibo de llegada de un servidor
+	+Atributos: 
+		-Ip del coordinador
+	+Quien envía: DNS
+	+Quien recibe: Servidor,Cliente
+	+Que hace quien recibe: 
+		-Servidor:Colocarse como servidor trabajador usando el
+		coordinador en la ip recibida
+		-Cliente: Usar la ip recibida como servidor rmi
+*WHO
+	+Significado: Pregunta de quién es el coordinador
+	+Atributos: Ninguno
+	+Quien envía: Cliente
+	+Quien recibe: DNS
+	+Que hace quien recibe: Devolver mensaje OK con la ip del servidor principal
+	o devolver NOTHING
+*NOTHING
+	+Significado: No se tiene servidor principal por los momentos
+	+Atributos: Ninguno
+	+Quien envía: DNS
+	+Quien recibe: Cliente, Servidor
+	+Que hace quien recibe:
+		-Cliente: Espera un momento y vuelve a mandar un mensaje WHO
+		-Servidor: Espera un momento y vuelve a mandar un mensaje SERVER
+*FAILED
+	+Significado: El servidor principal se cayó
+	+Atributos: Ninguno
+	+Quien envía: Cliente
+	+Quien recibe: DNS
+	+Que hace quien recibe: Se setea su ip del principal a null. Esto solo ocurre
+	si el mensaje no es obsoleto, osea si no es mas viejo que otro mensaje ya
+	atendido
+*ELECTION
+	+Significado: Ha comenzado una nueva elección
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: DNS,Servidor
+	+Que hace quien recibe:
+		-DNS: Setea la ip de principal a null.
+		-Servidor: Comienza el proceso de elección. Borran al principal caido de
+		la lista (o lo colocan como muerto)
+*ELECTED
+	+Significado: Yo soy el nuevo coordinador
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: Servidor,DNS
+	+Que hace quien recibe: 
+		-Servidor:Usa al que envió como nuevo coordinador
+		-DNS: Coloca su ip del servidor como la del servidor que envio y manda de
+		vuelta un mensaje COORD
+		NOTA: Estas respuestas solo pasan si aun no se tiene servidor principal,
+		para evitar doble elección
+*STATUS
+	+Significado: Chequeo del status de los servidores
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe: Manda un mensaje ALIVE con su status actual
+*ALIVE
+	+Significado: Mensaje de "estoy vivo"
+	+Atributos:
+		-Nombre
+		-Tipo
+		-Lista de archivos
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe: Actualiza su lista interna de servidores
+*UPDATE
+	+Significado: Delegación del comando update
+	+Atributos:
+		-Nombre del archivo
+		-ip del cliente
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe: 
+		-Servidor Activo: Si no esta ocupado, revisa quien tiene la version mas
+		reciente del archivo. Si es el mismo, responde con un mensaje FILE seguido
+		del archivo. Si no, manda UPDATE a servidores pasivos que tengan el
+		archivo hasta que lo consiga. Si esta ocupado, manda BUSY de vuelta
+		-Servidor Pasivo: Si esta ocupado, manda BUSY de vuelta. Si no, manda su
+		versión mas reciente del archivo en un mensaje FILE
+*FILE
+	+Siginificado: Retorno de archivo
+	+Atributos
+		-Archivo
+		-ip del cliente
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe:
+		-Servidor Activo: Envía un mensaje FILE con la respuesta al servidor
+		principal
+		-Servidor Principal: Envia el archivo como respuesta a la ip del cliente
+*BUSY
+	+Significado: Ocupado
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe:
+		-Servidor Activo: Envía el request a otro servidor pasivo
+		-Servidor Principal: Envía el request a otro servidor activo o pasivo
+		según sea el caso
+*COMMIT
+	+Significado: Delegación del comando commit
+	+Atributos
+		-Nombre del archivo
+		-Archivo
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe:
+		-Servidor Activo: Si no esta ocupado, determina a cuales servidores
+		pasivos enviar las réplicas, y envía un mensaje REPLICA a cada uno. Si no
+		hay suficientes pasivos, guarda una replica local y envía a los servidores
+		activos según lo necesite. Cuando reciba suficientes mensajes DONE,
+		envía SUCCESS al servidor principal. Si esta ocupado, envía BUSY
+		-Servidor Pasivo: Si no esta ocupado, actualiza el archivo localmente y
+		envía DONE. Si está ocupado, envía BUSY
+*REPLICA
+	+Significado: Replicar archivo en este servidor
+	+Atributos
+		-Nombre de archivo
+		-Archivo
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe:
+		-Servidor Activo: Si no está ocupado, actualiza el archivo localmente y
+		envía DONE. Si esta ocupado, envía BUSY
+		-Servidor Pasivo: Si no esta ocupado, actualiza el archivo localmente y
+		envía DONE. Si esta ocupado, envía BUSY
+*DONE
+	+Significado: Se hizo la réplica localmente
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe: Aumenta el contador de replicas hechas
+*SUCCESS
+	+Significado: Se hizo la replicación distribuida
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: Servidor Principal
+	+Que hace quien recibe: Envia la notificacion de commit exitoso al cliente
+	que lo pidio
+*PING
+	+Significado: Mensaje de "estas vivo?"
+	+Atributos: Ninguno
+	+Quien envía: Servidor
+	+Quien recibe: Servidor
+	+Que hace quien recibe: Envía un mensaje de ALIVE
