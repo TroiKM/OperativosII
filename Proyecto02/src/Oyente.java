@@ -6,12 +6,10 @@ public class Oyente implements Runnable{
 
 	private Colas<DatagramPacket> mensajes;
 	private MulticastSocket socket;
-	private int buffer_size;
         
-	public Oyente(Colas<DatagramPacket> c, MulticastSocket s, int b){
+	public Oyente(Colas<DatagramPacket> c, MulticastSocket s){
 		mensajes = c;
 		socket = s;
-		buffer_size = b;
 	}
     
 	public void run(){

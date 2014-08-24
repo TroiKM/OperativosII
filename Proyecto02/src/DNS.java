@@ -5,8 +5,6 @@ import java.io.*;
 
 public class DNS implements Runnable{
 
-	private static final int BUFFER_SIZE = 256;
-
 	private InetAddress ipPrincipal;
 	private Boolean failed;
 	private DatagramSocket socket;
@@ -48,13 +46,13 @@ public class DNS implements Runnable{
 	private Mensaje executeCommand(Mensaje m, InetAddress a){
 		String c = m.getCommand();
 
-		if(c == "WHO"){
+		if(c.equals("WHO")){
 			if(ipPrincipal == null){
 				return new Mensaje("NOTHING");
 			}else{
 				return new Mensaje("OK",ipPrincipal);
 			}
-		}else if(c == "SERVER"){
+		}else if(c.equals("SERVER")){
 			if(ipPrincipal == null){
 				ipPrincipal = a;
 				return new Mensaje("COORD");

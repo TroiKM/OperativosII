@@ -10,9 +10,7 @@ import java.util.Queue;
 import java.net.*;
 import java.io.*;
 
-public class Servidor{
-
-	private static final int BUFFER_SIZE = 256;
+public class Servidor{	
 
 	private ServerInfo info;
 	private Queue<ServerInfo> servers;
@@ -38,8 +36,8 @@ public class Servidor{
 
 		Colas<DatagramPacket> x = new Colas<DatagramPacket>();
 		
-		Thread oye = new Thread(new Oyente(x,socket,BUFFER_SIZE),"Oyente");
-		Thread tra = new Thread(new Trabajador(x,socket,BUFFER_SIZE),"Trabaj");
+		Thread oye = new Thread(new Oyente(x,socket),"Oyente");
+		Thread tra = new Thread(new Trabajador(x,socket),"Trabaj");
 		oye.start();
 		tra.start();
 		

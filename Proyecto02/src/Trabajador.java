@@ -5,28 +5,25 @@ public class Trabajador implements Runnable{
 
 	private Colas<DatagramPacket> mensajes;
 	private MulticastSocket socket;
-	private int buffer_size;
     
 	private InetAddress group;
 	private int puertoDNS;
-	private String dirDNS;
+	private InetAddress dirDNS;
 
 
-	public Trabajador(Colas<DatagramPacket> c,MulticastSocket s,int b){
+	public Trabajador(Colas<DatagramPacket> c,MulticastSocket s){
 		mensajes = c;
 		socket = s;
-		buffer_size = b;
 	}
 
 	public void run(){
 	
 		while(true){
 		
-			DatagramPacket res;
+			Mensaje men = null;
 
 			DatagramPacket wrd = this.mensajes.removeElem();
 			if(wrd!=null){
-				Mensaje men = null;
 		
 				try{
 					men = Mensajeria.decodePacket(wrd);
