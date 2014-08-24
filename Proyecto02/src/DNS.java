@@ -7,7 +7,7 @@ public class DNS implements Runnable{
 
 	private static final int BUFFER_SIZE = 256;
 
-	private String ipPrincipal;
+	private InetAddress ipPrincipal;
 	private Boolean failed;
 	private DatagramSocket socket;
 
@@ -22,74 +22,49 @@ public class DNS implements Runnable{
 	}
 
 	public void run(){
-		while(true){
-			byte[] buf = new byte[BUFFER_SIZE];
-			DatagramPacket p = new DatagramPacket(buf,buf.length);
-
-			try{
-				System.out.println("Listening");
-				socket.receive(p);
-			}catch(IOException e){
-				e.printStackTrace();
-			}
-
-			System.out.println("Message received");
-			String received = new String(p.getData(),0,p.getLength());
-			String response;
-			DatagramPacket resPacket;
-
-			if(received.startsWith("WHO")){
-				respondIP(p);
-			}else if(received.startsWith("FAILED")){
-				failed = true;
-				ipPrincipal = null;
-				respondIP(p);
-			}else if(received.startsWith("SERVER")){
-				respondCoord(p);
-			}
-		}
-	}
-
-	private void respondIP(DatagramPacket p){
-		DatagramPacket resPacket;
-		byte[] buf = new byte[BUFFER_SIZE];
-
-		if(ipPrincipal == null){
-			String response = "NOTHING";
-			buf = response.getBytes();
-		}else{
-			buf = ipPrincipal.getBytes();
-		}
-		resPacket = new DatagramPacket(buf,buf.length,p.getAddress(),p.getPort());
-
 		try{
-			socket.send(resPacket);
+			while(true){
+				System.out.println("Listening...");
+				DatagramPacket p = Mensajeria.receivePacket(socket);
+				System.out.println("Packet received");
+
+				Mensaje men = Mensajeria.decodePacket(p);
+				System.out.println("Packet decoded");
+				System.out.println("Got message with command " + men.getCommand());
+
+				Mensaje ans = executeCommand(men,p.getAddress());
+				System.out.println("Sending back message with command " +
+				ans.getCommand());
+
+				Mensajeria.sendMessage(socket,p.getAddress(),p.getPort(),ans.getCommand(),
+				ans.getAttributes());
+			}
 		}catch(IOException e){
 			e.printStackTrace();
 		}
 	}
+	
 
-	private void respondCoord(DatagramPacket p){
-		DatagramPacket resPacket;
-		byte[] buf = new byte[BUFFER_SIZE];
-		String response;
+	private Mensaje executeCommand(Mensaje m, InetAddress a){
+		String c = m.getCommand();
 
-		if(failed){
-			response = "COORD";
-			ipPrincipal = p.getAddress().toString();
-			failed = false;
-		}else{
-			response = "OK";
+		if(c == "WHO"){
+			if(ipPrincipal == null){
+				return new Mensaje("NOTHING");
+			}else{
+				return new Mensaje("OK",ipPrincipal);
+			}
+		}else if(c == "SERVER"){
+			if(ipPrincipal == null){
+				ipPrincipal = a;
+				return new Mensaje("COORD");
+			}else{
+				return new Mensaje("OK",ipPrincipal);
+			}
 		}
-		buf = response.getBytes();
-		resPacket = new DatagramPacket(buf,buf.length,p.getAddress(),p.getPort());
 
-		try{
-			socket.send(resPacket);
-		}catch(IOException e){
-			e.printStackTrace();
-		}
-	}
+		return new Mensaje("PING");
+	}	
 
 	public static void main(String args[]){
 		new Thread(new DNS(1111)).start();

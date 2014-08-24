@@ -22,23 +22,17 @@ public class Trabajador implements Runnable{
 	
 		while(true){
 		
-			byte[] buf;
 			DatagramPacket res;
 
 			DatagramPacket wrd = this.mensajes.removeElem();
 			if(wrd!=null){
-				String s = new String(wrd.getData(),0,wrd.getLength());
-				System.out.println("Trabajador: "+s);
-				s = "SERVER";
-				
-				buf = new byte[this.buffer_size];
-				buf = s.getBytes();
-				res = new DatagramPacket(buf,buf.length,
-				wrd.getAddress(),wrd.getPort());
+				Mensaje men = null;
 		
 				try{
+					men = Mensajeria.decodePacket(wrd);
+					System.out.println("Trabajador: "+men.getCommand());
 					Thread.sleep(1000);
-					this.socket.send(res);
+					Mensajeria.sendMessage(socket,wrd.getAddress(),wrd.getPort(),"SERVER");
 					System.out.println("Trabajador: send");
 				}catch(IOException e){
 					e.printStackTrace();

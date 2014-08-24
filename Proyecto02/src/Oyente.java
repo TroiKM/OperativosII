@@ -15,16 +15,11 @@ public class Oyente implements Runnable{
 	}
     
 	public void run(){
-		byte[] buf;
-		DatagramPacket rec;
+		DatagramPacket rec = null;
 		
 		while(true){
-
-			buf = new byte[buffer_size];
-			rec = new DatagramPacket(buf,buf.length);
-			
 			try{
-				socket.receive(rec);
+				rec = Mensajeria.receivePacket(socket);
 				System.out.println("Oyente: receive");
 			} catch(IOException e) {
 				e.printStackTrace();

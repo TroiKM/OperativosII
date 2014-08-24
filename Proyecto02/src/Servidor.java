@@ -19,16 +19,16 @@ public class Servidor{
 	private MulticastSocket socket;
 	private InetAddress group;
 	private int puertoDNS;
-	private String dirDNS;
+	private InetAddress dirDNS;
 	//private Servicios s;
 
 	public Servidor(String n, int gPort, String g, int dPort, String d){
 		servers = new LinkedList<ServerInfo>();
 		info = new ServerInfo(n,"Activo");
 		puertoDNS = dPort;
-		dirDNS = d;
 
 		try{
+			dirDNS = InetAddress.getByName(d);
 			socket = new MulticastSocket(gPort);
 			group = InetAddress.getByName(g);
 			socket.joinGroup(group);
@@ -44,16 +44,9 @@ public class Servidor{
 		tra.start();
 		
 		System.out.println("Starting the send");
-		byte[] buf = new byte[BUFFER_SIZE];
-		String i = "SERVER";
-		buf = i.getBytes();
 
 		try{
-			DatagramPacket init = new
-			DatagramPacket(buf,buf.length,InetAddress.getByName(dirDNS),puertoDNS);
-			socket.send(init);
-			System.out.println("Servidor: send");
-			buf = new byte[BUFFER_SIZE];
+			Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER");
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
