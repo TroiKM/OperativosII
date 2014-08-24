@@ -3,11 +3,13 @@ import java.io.*;
 public class Mensaje implements Serializable{
 
 	private String comando;
+	private int tiempo;
 	private Object[] atributos;
 
-	public Mensaje(String c, Object... a){
+	public Mensaje(String c, int t, Object... a){
 		comando = c;
 		atributos = a;
+		tiempo = t;
 	}
 
 	public Object getAttribute(int i){
@@ -24,6 +26,10 @@ public class Mensaje implements Serializable{
 
 	public String getCommand(){
 		return comando;
+	}
+
+	public int getTime(){
+		return tiempo;
 	}
 
 }

@@ -9,11 +9,13 @@ public class Trabajador implements Runnable{
 	private InetAddress group;
 	private int puertoDNS;
 	private InetAddress dirDNS;
+	private int time;
 
 
 	public Trabajador(Colas<DatagramPacket> c,MulticastSocket s){
 		mensajes = c;
 		socket = s;
+		time = 0;
 	}
 
 	public void run(){
@@ -29,7 +31,7 @@ public class Trabajador implements Runnable{
 					men = Mensajeria.decodePacket(wrd);
 					System.out.println("Trabajador: "+men.getCommand());
 					Thread.sleep(1000);
-					Mensajeria.sendMessage(socket,wrd.getAddress(),wrd.getPort(),"SERVER");
+					Mensajeria.sendMessage(socket,wrd.getAddress(),wrd.getPort(),"SERVER",time);
 					System.out.println("Trabajador: send");
 				}catch(IOException e){
 					e.printStackTrace();

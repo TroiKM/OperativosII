@@ -6,14 +6,16 @@ import java.io.*;
 public class DNS implements Runnable{
 
 	private InetAddress ipPrincipal;
-	private Boolean failed;
+	private boolean failed;
 	private DatagramSocket socket;
+	private int time;
 
 	public DNS(int port){
 		try{
 			socket = new DatagramSocket(port);
 			ipPrincipal = null;
 			failed = true;
+			time = 0;
 		}catch (SocketException e){
 			e.printStackTrace();
 		}
@@ -35,7 +37,7 @@ public class DNS implements Runnable{
 				ans.getCommand());
 
 				Mensajeria.sendMessage(socket,p.getAddress(),p.getPort(),ans.getCommand(),
-				ans.getAttributes());
+				ans.getTime(), ans.getAttributes());
 			}
 		}catch(IOException e){
 			e.printStackTrace();
@@ -48,20 +50,20 @@ public class DNS implements Runnable{
 
 		if(c.equals("WHO")){
 			if(ipPrincipal == null){
-				return new Mensaje("NOTHING");
+				return new Mensaje("NOTHING",time);
 			}else{
-				return new Mensaje("OK",ipPrincipal);
+				return new Mensaje("OK",time,ipPrincipal);
 			}
 		}else if(c.equals("SERVER")){
 			if(ipPrincipal == null){
 				ipPrincipal = a;
-				return new Mensaje("COORD");
+				return new Mensaje("COORD",time);
 			}else{
-				return new Mensaje("OK",ipPrincipal);
+				return new Mensaje("OK",time,ipPrincipal);
 			}
 		}
 
-		return new Mensaje("PING");
+		return new Mensaje("PING",time);
 	}	
 
 	public static void main(String args[]){

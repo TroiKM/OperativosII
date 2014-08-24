@@ -5,9 +5,9 @@ class Mensajeria{
 	public static final int BUFFER_SIZE = 256;
 
    public static void sendMessage(DatagramSocket s, InetAddress address, 
-	int port, String com, Object...atr) throws IOException{
+	int port, String com,int t, Object...atr) throws IOException{
 
-		Mensaje men = new Mensaje(com,atr);
+		Mensaje men = new Mensaje(com,t,atr);
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		ObjectOutputStream o = new ObjectOutputStream(b);
 		o.writeObject(men);

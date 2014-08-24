@@ -18,12 +18,14 @@ public class Servidor{
 	private InetAddress group;
 	private int puertoDNS;
 	private InetAddress dirDNS;
+	private int time;
 	//private Servicios s;
 
 	public Servidor(String n, int gPort, String g, int dPort, String d){
 		servers = new LinkedList<ServerInfo>();
 		info = new ServerInfo(n,"Activo");
 		puertoDNS = dPort;
+		time = 0;
 
 		try{
 			dirDNS = InetAddress.getByName(d);
@@ -44,7 +46,7 @@ public class Servidor{
 		System.out.println("Starting the send");
 
 		try{
-			Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER");
+			Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
