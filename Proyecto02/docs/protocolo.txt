@@ -21,6 +21,7 @@ Protocolo de mensajeria
 	+Significado: ACK de recibo de llegada de un servidor
 	+Atributos: 
 		-Ip del coordinador
+		-Puerto del coordinador
 	+Quien envía: DNS
 	+Quien recibe: Servidor,Cliente
 	+Que hace quien recibe: 

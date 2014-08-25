@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
-import package.Archivo;
 
 
 public class ServiciosImpl 
@@ -33,9 +32,8 @@ public class ServiciosImpl
 	 * Variables globales.
 	 */
 	private static final long serialVersionUID = 1L;
-	public List<Archivo> listaArchivos = new ArrayList<Archivo>();
 	/**
-	 * Fin de las variables globales.
+	 * Fin de las variables globaless.
 	 */
 	
 
@@ -124,65 +122,15 @@ public class ServiciosImpl
 	public String subirArchivo(String nombreArchivo, byte[] datosArchivo)
 	throws java.rmi.RemoteException {
 		
-		try {
-			Archivo nuevo = new Archivo(1, );
-			nuevo.setArchivo(nombreArchivo);
-			listaArchivos.add(nuevo);
-			File archivo = new File(nombreArchivo);
-			BufferedOutputStream salida = new
-			BufferedOutputStream(new FileOutputStream(archivo.getName()));
-				
-			salida.write(datosArchivo,0,datosArchivo.length);
-			salida.flush();
-			salida.close();
-
-		} catch(Exception e) {
-				System.err.println("FileServer exception: "+ e.getMessage());
-				e.printStackTrace();
+		if(Archivador.escribirArchivo(nombreArchivo,datosArchivo)){
+			return nombreArchivo + " ha sido subido con exito.\n";
+		}else{
+			return nombreArchivo + " no ha podido ser subido.\n";
 		}
-	    
-		return nombreArchivo + " ha sido subido con exito.\n";
-	}
-
-		/** 
-	 * subirArchivo:
-	 * 	Funcion encargada de subir un archivo 
-	 * 	al servidor.
-	 * 
-	 * @param 	Nombre del usuario a autenticar.
-	 * @param	Clave del usuario a autenticar.
-	 * @param	Nombre del archivo a ser agregado.
-	 * @param	Arreglo de bytes que contienen la informacion del archivo.
-	 * @return	Devuelve "false" en caso de error de autentificacion y 
-	 * 			un mensaje de exito en caso de exito y otro mensaje en 
-	 * 			caso de error.
-	 */
-	public String subirArchivos(String nombre, String clave, byte[] datosArchivo)
-	throws java.rmi.RemoteException {
-		
-		try {
-			ArchivoDueno nuevo = new ArchivoDueno();
-			nuevo.setArchivo(nombreArchivo);
-			nuevo.setDueno(nombre);
-			listaDuenos.add(nuevo);
-			File archivo = new File(nombreArchivo);
-			BufferedOutputStream salida = new
-				BufferedOutputStream(new FileOutputStream(archivo.getName()));
-				
-			salida.write(datosArchivo,0,datosArchivo.length);
-			salida.flush();
-			salida.close();
-
-		} catch(Exception e) {
-				System.err.println("FileServer exception: "+ e.getMessage());
-				e.printStackTrace();
-		}
-	    
-		return nombreArchivo + " ha sido subido con exito.\n";
 	}
 	
 	/** 
-	 * bajarArchivo:
+	 * updateArchivos:
 	 * 	Funcion encargada de bajar un archivo 
 	 * 	del servidor.
 	 * 
@@ -192,28 +140,11 @@ public class ServiciosImpl
 	 * @return	Devuelve null en caso de error y un arreglo de bytes con
 	 * 			el contenido del archivo.
 	 */
-	public byte[] updateArchivos(String nombre, String clave)
+	public byte[] updateArchivos(String nombreArchivo)
 	throws java.rmi.RemoteException {
-		
-		try {
-			
-			File archivo = new File(nombreArchivo);
-			byte buffer[] = new byte[(int)archivo.length()];
-		
-			BufferedInputStream entrada = new 
-					BufferedInputStream(new FileInputStream(nombreArchivo));	         
-	    	
-				entrada.read(buffer,0,buffer.length);
-				entrada.close();
-			
-			return(buffer);
-	         
-		} catch(FileNotFoundException e){
-			return null;
-		} catch (IOException e) {
-			return null;
-	    } 
-		
+
+		return Archivador.devolverArchivo(nombreArchivo);
+
 	}
 	
 }

@@ -13,34 +13,6 @@ public interface Servicios
 	extends java.rmi.Remote {
 	
 	/** 
-	 * iniciarSesion:
-	 * 	Funcion encargada de autenticar el usuario 
-	 * 	y agregar al log este inicio de sesion.
-	 * 
-	 * @param 	Nombre del usuario a entrar.
-	 * @param	Clave del usuario a entrar.
-	 * @param	Opcion para identificar si se registrara en 
-	 * 			el log o no.
-	 * @return	Devuelve true si fue exitosa la conexion, false
-	 * 			en caso de error de autentificacion.
-	 */
-	public Boolean iniciarSesion(String nombre, String clave, int i)
-			throws java.rmi.RemoteException;
-	
-	/** 
-	 * cerrarSesion:
-	 * 	Funcion encargada de autenticar el usuario 
-	 * 	y agregar al log este cierre de sesion.
-	 * 
-	 * @param 	Nombre del usuario a salir.
-	 * @param	Clave del usuario a salir.
-	 * @return	Devuelve true si fue exitosa la salida, false
-	 * 			en caso de error de autentificacion.
-	 */
-	public Boolean cerrarSesion(String nombre, String clave)
-			throws java.rmi.RemoteException;
-	
-	/** 
 	 * listarArchivosEnServidor:
 	 * 	Funcion encargada de buscar si un archivo 
 	 * 	pertenece a la lista de archivos locales 
@@ -57,7 +29,7 @@ public interface Servicios
 	 * 			no haber encontrado el archivo en la lista de archivos
 	 * 			en el servidor.
 	 */
-	public String listarArchivosEnServidor(String nombre, String clave, String nombreArchivo)
+	public String listarArchivosEnServidor(String nombreArchivo)
 	throws java.rmi.RemoteException;
 	
 	
@@ -74,7 +46,7 @@ public interface Servicios
 	 * 			un mensaje de exito en caso de exito y otro mensaje en 
 	 * 			caso de error.
 	 */
-	public String subirArchivo(String nombre, String clave, String nombreArchivo, byte[] bytesArchivo)
+	public String subirArchivo(String nombreArchivo, byte[] bytesArchivo)
 		throws java.rmi.RemoteException;
 	
 	/** 
@@ -88,23 +60,7 @@ public interface Servicios
 	 * @return	Devuelve null en caso de error y un arreglo de bytes con
 	 * 			el contenido del archivo.
 	 */
-	public byte[] updateArchivos(String nombre, String clave)
+	public byte[] updateArchivos(String nombreArchivo)
 		throws java.rmi.RemoteException;
-	
-	/** 
-	 * borrarArchivo:
-	 * 	Funcion encargada de borrar un archivo 
-	 * 	del servidor.
-	 * 
-	 * @param 	Nombre del usuario a autenticar.
-	 * @param	Clave del usuario a autenticar.
-	 * @param	Nombre del archivo a ser borrado.
-	 * @return	Devuelve "false" en caso de error de autentificacion y 
-	 * 			un mensaje de exito en caso de exito y otro mensaje en 
-	 * 			caso de error.
-	 */
-	public String borrarArchivo(String nombre, String clave, String nombreArchivo)
-		throws java.rmi.RemoteException;
-	
 		
 }
