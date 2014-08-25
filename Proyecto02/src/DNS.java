@@ -61,7 +61,7 @@ public class DNS implements Runnable{
 				puertoPrincipal = p;
 				return new Mensaje("COORD",time);
 			}else{
-				return new Mensaje("OK",time,ipPrincipal);
+				return new Mensaje("OK",time,ipPrincipal, puertoPrincipal);
 			}
 		}else if(c.equals("FAILED")){
 			ipPrincipal = null;

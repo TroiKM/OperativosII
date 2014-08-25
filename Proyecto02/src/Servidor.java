@@ -19,11 +19,9 @@ public class Servidor{
 	private int puertoDNS;
 	private InetAddress dirDNS;
 	private int time;
-	//private Servicios s;
-
+	
 	public Servidor(String n, int gPort, String g, int dPort, String d){
 		servers = new LinkedList<ServerInfo>();
-		info = new ServerInfo(n,"Activo");
 		puertoDNS = dPort;
 		time = 0;
 
@@ -38,20 +36,20 @@ public class Servidor{
 
 		Colas<DatagramPacket> x = new Colas<DatagramPacket>();
 		
+		info = new ServerInfo(n,"Activo", group, gPort);
+		System.out.println("My info: " + info);
+
 		Thread oye = new Thread(new Oyente(x,socket),"Oyente");
-		Thread tra = new Thread(new Trabajador(x,socket,gPort),"Trabaj");
+		Thread tra = new Thread(new Trabajador(x,socket,gPort,info),"Trabaj");
 		oye.start();
 		tra.start();
 		
 		System.out.println("Starting the send");
 
 		try{
-<<<<<<< HEAD
-		   // Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
-			Mensajeria.sendMessage(socket,dirDNS,2222,"SERVER",time);
-=======
+			// Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
+			//Mensajeria.sendMessage(socket,dirDNS,2222,"SERVER",time);
 		    Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
->>>>>>> 851521a1132a06a5a8f45b0866349cfd45d2011a
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -65,13 +63,9 @@ public class Servidor{
 	}
 
 	public static void main(String args[]){
-<<<<<<< HEAD
-	    Servidor s = new Servidor("Name",2225,"224.0.0.1",1115,"192.168.0.105");
-//	    Servidor s = new Servidor("Name",2223,"224.0.0.1",1113,"localhost");
-
-=======
-	    Servidor s = new Servidor("Name",2222,"224.0.0.1",1111,"localhost");
->>>>>>> 851521a1132a06a5a8f45b0866349cfd45d2011a
+	//    Servidor s = new Servidor("Name",2225,"224.0.0.1",1115,"192.168.0.105");
+		Servidor s = new Servidor("Name",Integer.parseInt(args[0]),"224.0.0.1",1111,"localhost");
+		//Servidor s = new Servidor("Name",2222,"224.0.0.1",1111,"localhost");
 	}
 
 }

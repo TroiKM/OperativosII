@@ -3,6 +3,8 @@ import java.io.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Trabajador implements Runnable{
 
@@ -16,13 +18,17 @@ public class Trabajador implements Runnable{
 
 	private Servicios serv;
 	private int puerto;
+	private ServerInfo info;
+	private Queue<ServerInfo> servers = new LinkedList<ServerInfo>();;
 
 
-	public Trabajador(Colas<DatagramPacket> c,MulticastSocket s, int p){
+
+	public Trabajador(Colas<DatagramPacket> c,MulticastSocket s, int p, ServerInfo i){
 		mensajes = c;
 		socket = s;
 		time = 0;
 		puerto = p;
+		info = i;
 	}
 
 	public void run(){
@@ -61,11 +67,28 @@ public class Trabajador implements Runnable{
 				e.printStackTrace();
 			}
 			System.out.println("Ahora soy el cordi");
-		}else{
-			return;
+		}else if ( com.equals("OK") ) {
+			try{
+				Mensajeria.sendMessage(this.socket,(InetAddress)men.getAttribute(0),(int)men.getAttribute(1),"SERVER",time, this.info );
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		}else if (com.equals("SERVER")) {
+			ServerInfo i = (ServerInfo) men.getAttribute(0);
+			this.servers.add(i);
+			System.out.println(this.servers);
+			try{
+				for (ServerInfo inf: this.servers) {
+					Mensajeria.sendMessage(this.socket,inf.getIP(),inf.getPuerto(),"OlaBale",time, this.servers);
+				}
+			}catch(IOException e){
+				e.printStackTrace();
+			}
+		} else if (com.equals("OlaBale")){
+			this.servers = (Queue<ServerInfo>)men.getAttribute(0);
+			System.out.println(this.servers);
 		}
 
 	}
-
 
 } 

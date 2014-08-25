@@ -4,8 +4,10 @@
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.net.*;
+import java.io.*;
 
-public class ServerInfo{
+public class ServerInfo implements Serializable{
 
 	private String nombre;
 	private String tipo;
@@ -14,10 +16,13 @@ public class ServerInfo{
 	private int puerto;
 	private int edad;
 
-	public ServerInfo(String n, String t){
+	public ServerInfo(String n, String t, InetAddress ip, int p){
 		archivos = new LinkedList<Archivo>();
 		nombre = n;
 		tipo = t;
+		edad = 1;
+		IP = ip;
+		puerto = p;
 	}
 
 	public String getNombre(){
@@ -31,5 +36,18 @@ public class ServerInfo{
 	public void setTipo(String t){
 		tipo = t;
 	}
+
+	public InetAddress getIP(){
+		return IP;
+	}
+	
+	public int getPuerto(){
+		return puerto;
+	}
+	
+	public String toString(){
+		return "IP: " + this.IP + 
+			" Puerto: " + this.puerto;
+	};
 
 }
