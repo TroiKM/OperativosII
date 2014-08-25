@@ -71,6 +71,8 @@ public class ServiciosImpl
 	public String listarArchivosEnServidor(String nombreArchivo)
 	throws java.rmi.RemoteException {
 		
+		
+		
 		String path = "."; 
 		String respuesta = "";
 		

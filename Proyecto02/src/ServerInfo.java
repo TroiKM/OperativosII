@@ -10,6 +10,9 @@ public class ServerInfo{
 	private String nombre;
 	private String tipo;
 	private Queue<Archivo> archivos;
+	private InetAddress IP;
+	private int puerto;
+	private int edad;
 
 	public ServerInfo(String n, String t){
 		archivos = new LinkedList<Archivo>();
