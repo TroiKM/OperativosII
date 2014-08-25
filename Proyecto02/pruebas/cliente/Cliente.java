@@ -100,7 +100,10 @@ public class Cliente {
 		String comando = " ";
 		boolean recovering = false;
 		while(true){
-		 	if(!recovering) comando = System.console().readLine();
+		 	if(!recovering){
+				System.out.println("Por favor introduzca un comando");
+				comando = System.console().readLine();
+			}
 			recovering = false;
 			try{
 				c.ejecutarComando(comando);
