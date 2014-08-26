@@ -79,12 +79,12 @@ public class Trabajador implements Runnable{
 			System.out.println(this.servers);
 			try{
 				for (ServerInfo inf: this.servers) {
-					Mensajeria.sendMessage(this.socket,inf.getIP(),inf.getPuerto(),"OlaBale",time, this.servers);
+					Mensajeria.sendMessage(this.socket,inf.getIP(),inf.getPuerto(),"NEWSERVER",time, this.servers);
 				}
 			}catch(IOException e){
 				e.printStackTrace();
 			}
-		} else if (com.equals("OlaBale")){
+		} else if (com.equals("NEWSERVER")){
 			this.servers = (Queue<ServerInfo>)men.getAttribute(0);
 			System.out.println(this.servers);
 		}

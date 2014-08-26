@@ -28,6 +28,13 @@ Protocolo de mensajeria
 		-Servidor:Colocarse como servidor trabajador usando el
 		coordinador en la ip recibida
 		-Cliente: Usar la ip recibida como servidor rmi
+*NEWSERVER
+	+Significado: Avisa que llegó un nuevo servidor.
+	+Atributos: 
+		- Lista actualizada de servers con el IP y puerto
+			del nuevo servidor
+	+Quien envía: Servidor principal.
+	+Quien recibe:  Servidores en la lista de servers.
 *WHO
 	+Significado: Pregunta de quién es el coordinador
 	+Atributos: Ninguno
