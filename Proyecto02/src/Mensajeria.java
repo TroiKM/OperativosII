@@ -42,11 +42,11 @@ class Mensajeria{
 	public static void broadcast(DatagramSocket s,Queue<ServerInfo> se,String com,int t, Object...atr){
 		System.out.println(se);
 		try{
-			for (ServerInfo inf: se) {
-				Mensajeria.sendMessage(s,inf.getIP(),inf.getPuerto(),com,t, atr);
-			}
+		    for (ServerInfo inf: se) {
+			Mensajeria.sendMessage(s,inf.getIP(),inf.getPuerto(),com,t, atr);
+		    }
 		}catch(IOException e){
-			e.printStackTrace();
+		    e.printStackTrace();
 		}
 	}
 	

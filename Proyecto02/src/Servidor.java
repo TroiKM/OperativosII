@@ -35,12 +35,13 @@ public class Servidor{
 		}
 
 		Colas<DatagramPacket> x = new Colas<DatagramPacket>();
-		
+		Colas<ServerInfo> y = new Colas<ServerInfo>();
+				
 		info = new ServerInfo(n,"Activo", group, gPort);
 		System.out.println("My info: " + info);
 
 		Thread oye = new Thread(new Oyente(x,socket),"Oyente");
-		Thread tra = new Thread(new Trabajador(x,socket,gPort,info),"Trabaj");
+		Thread tra = new Thread(new Trabajador(x,socket,gPort,info,y),"Trabaj");
 		oye.start();
 		tra.start();
 		

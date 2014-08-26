@@ -19,14 +19,16 @@ public class Trabajador implements Runnable{
 	private Servicios serv;
 	private int puerto;
 	private ServerInfo info;
-	private Queue<ServerInfo> servers = new LinkedList<ServerInfo>();
+    private Colas<ServerInfo> servers;
+    
 
-	public Trabajador(Colas<DatagramPacket> c,MulticastSocket s, int p, ServerInfo i){
+    public Trabajador(Colas<DatagramPacket> c,MulticastSocket s, int p, ServerInfo i,Colas<ServerInfo> ser){
 		mensajes = c;
 		socket = s;
 		time = 0;
 		puerto = p;
 		info = i;
+		servers = ser;
 	}
 
 	public void run(){
@@ -73,11 +75,11 @@ public class Trabajador implements Runnable{
 			}
 		}else if (com.equals("SERVER")) {
 			ServerInfo i = (ServerInfo) men.getAttribute(0);
-			this.servers.add(i);
-			Mensajeria.broadcast(this.socket,this.servers,"NEWSERVER",time, this.servers);
+			this.servers.addElem(i);
+			Mensajeria.broadcast(this.socket,this.servers.getQueue(),"NEWSERVER",time, this.servers.getQueue());
 		} else if (com.equals("NEWSERVER")){
-			this.servers = (Queue<ServerInfo>)men.getAttribute(0);
-			System.out.println(this.servers);
+		    this.servers.setQueue((Queue<ServerInfo>)men.getAttribute(0));
+		    System.out.println(this.servers.getQueue());
 		}
 
 	}

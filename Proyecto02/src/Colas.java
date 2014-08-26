@@ -29,6 +29,10 @@ public class Colas<E>{
 	public synchronized Queue<E> getQueue() {
 		return cola;
 	}
+
+    public synchronized void setQueue(Queue<E> s) {
+	this.cola = s;
+    }
 	
 	public synchronized void addElem(E p){
 		cola.add(p);

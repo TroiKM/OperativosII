@@ -4,27 +4,28 @@ import java.io.IOException;
 
 public class Alive implements Runnable{
 
-	private Colas<DatagramPacket> mensajes;
-	private MulticastSocket socket;
+    private MulticastSocket socket;
         
-	public Alive(Colas<DatagramPacket> c, MulticastSocket s){
-		mensajes = c;
-		socket = s;
-	}
+    public Alive(MulticastSocket s){
+	
+	socket = s;
+	
+    }
     
-	public void run(){
-		DatagramPacket rec = null;
+    public void run(){
+	DatagramPacket rec = null;
 		
-		while(true){
-			try{
-				rec = Mensajeria.receivePacket(socket);
-				System.out.println("Oyente: receive");
-			} catch(IOException e) {
-				e.printStackTrace();
-			}
+	while(true){
+	    try{
+		rec = Mensajeria.receivePacket(this.socket);
+		Mensajeria.sendMessage(this.socket,rec.getAddress(),
+				       rec.getPort(),"ALIVE",0);
+		
+	    } catch(IOException e) {
+		e.printStackTrace();
+	    }
 			
-			this.mensajes.addElem(rec);
-		}
 	}
+    }
 
 }
