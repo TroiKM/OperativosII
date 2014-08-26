@@ -5,15 +5,14 @@ import java.util.LinkedList;
 
 class Mensajeria{
 	public static final int BUFFER_SIZE = 2048;
-
+	
    public static void sendMessage(DatagramSocket s, InetAddress address, 
 	int port, String com,int t, Object...atr) throws IOException{
-
+	
 		Mensaje men = new Mensaje(com,t,atr);
 		ByteArrayOutputStream b = new ByteArrayOutputStream();
 		ObjectOutputStream o = new ObjectOutputStream(b);
 		o.writeObject(men);
-
 		byte[] res = b.toByteArray();
 		DatagramPacket toSend = new DatagramPacket(res,res.length,address,port);
 		s.send(toSend);

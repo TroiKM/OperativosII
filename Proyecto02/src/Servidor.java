@@ -47,8 +47,6 @@ public class Servidor{
 		System.out.println("Starting the send");
 
 		try{
-			// Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
-			//Mensajeria.sendMessage(socket,dirDNS,2222,"SERVER",time);
 		    Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -63,9 +61,7 @@ public class Servidor{
 	}
 
 	public static void main(String args[]){
-	//    Servidor s = new Servidor("Name",2225,"224.0.0.1",1115,"192.168.0.105");
 		Servidor s = new Servidor("Name",Integer.parseInt(args[0]),"224.0.0.1",1111,"localhost");
-		//Servidor s = new Servidor("Name",2222,"224.0.0.1",1111,"localhost");
 	}
 
 }
