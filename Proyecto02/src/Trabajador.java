@@ -76,14 +76,15 @@ public class Trabajador implements Runnable{
 		}else if (com.equals("SERVER")) {
 			ServerInfo i = (ServerInfo) men.getAttribute(0);
 			this.servers.add(i);
-			System.out.println(this.servers);
-			try{
-				for (ServerInfo inf: this.servers) {
-					Mensajeria.sendMessage(this.socket,inf.getIP(),inf.getPuerto(),"NEWSERVER",time, this.servers);
-				}
-			}catch(IOException e){
-				e.printStackTrace();
-			}
+			Mensajeria.broadcast(this.socket,this.servers,"NEWSERVER",time, this.servers);
+// 			System.out.println(this.servers);
+// 			try{
+// 				for (ServerInfo inf: this.servers) {
+// 					Mensajeria.sendMessage(this.socket,inf.getIP(),inf.getPuerto(),"NEWSERVER",time, this.servers);
+// 				}
+// 			}catch(IOException e){
+// 				e.printStackTrace();
+// 			}
 		} else if (com.equals("NEWSERVER")){
 			this.servers = (Queue<ServerInfo>)men.getAttribute(0);
 			System.out.println(this.servers);

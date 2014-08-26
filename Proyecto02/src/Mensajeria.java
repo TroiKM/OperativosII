@@ -1,5 +1,7 @@
 import java.net.*;
 import java.io.*;
+import java.util.Queue;
+import java.util.LinkedList;
 
 class Mensajeria{
 	public static final int BUFFER_SIZE = 2048;
@@ -37,5 +39,17 @@ class Mensajeria{
 		}
 		return res;
 	}
+	
+	public static void broadcast(DatagramSocket s,Queue<ServerInfo> se,String com,int t, Object...atr){
+		System.out.println(se);
+		try{
+			for (ServerInfo inf: se) {
+				Mensajeria.sendMessage(s,inf.getIP(),inf.getPuerto(),com,t, atr);
+			}
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+	}
+	
 
 }
