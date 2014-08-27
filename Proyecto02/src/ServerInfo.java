@@ -52,6 +52,14 @@ public class ServerInfo implements Serializable{
 		return puertoR;
 	}
 
+	public void addArchivo(Archivo a){
+		archivos.add(a);
+	}
+
+	public Queue<Archivo> getArchivos(){
+		return archivos;
+	}
+
 	
 	public String toString(){
 		return "IP: " + this.IP + 

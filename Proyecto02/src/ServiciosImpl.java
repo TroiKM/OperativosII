@@ -14,7 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.net.*;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.text.SimpleDateFormat;
@@ -36,6 +36,8 @@ public class ServiciosImpl
 	 * Fin de las variables globaless.
 	 */
 	
+	private Trabajador trab;
+	private int k;
 
 	/**
 	 * ServiciosImpl:
@@ -44,9 +46,11 @@ public class ServiciosImpl
 	 *  mediante el cual se conectara al servidor.
 	 *   
 	 */
-	public ServiciosImpl(String host, String puerto)
+	public ServiciosImpl(String host, String puerto, Trabajador t, int kes)
 	throws java.rmi.RemoteException {
 		super();
+		trab = t;
+		k = kes;
 	}
 	
 	/** 
@@ -121,12 +125,22 @@ public class ServiciosImpl
 	 */
 	public String subirArchivo(String nombreArchivo, byte[] datosArchivo)
 	throws java.rmi.RemoteException {
-		
-		if(Archivador.escribirArchivo(nombreArchivo,datosArchivo)){
-			return nombreArchivo + " ha sido subido con exito.\n";
-		}else{
-			return nombreArchivo + " no ha podido ser subido.\n";
+
+		String res = null;
+
+		try{
+			System.out.println("Trying the commit");
+			int replicated = trab.commit(nombreArchivo, datosArchivo,k);
+			if(replicated > 0){
+				res = "Se han hecho " + replicated + " replicas con exito";
+			}else{
+				res = "Error haciendo commit del archivo";
+			}
+		}catch(IOException e){
+			e.printStackTrace();
 		}
+
+		return res;
 	}
 	
 	/** 
@@ -143,7 +157,15 @@ public class ServiciosImpl
 	public byte[] updateArchivos(String nombreArchivo)
 	throws java.rmi.RemoteException {
 
-		return Archivador.devolverArchivo(nombreArchivo);
+		byte [] res = null;
+
+		try{
+			res = trab.update(nombreArchivo);
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+
+		return res;
 
 	}
 	

@@ -33,4 +33,8 @@ public class Archivo{
 		version = v;
 	}
 
+	public String getNombre(){
+		return nombre;
+	}
+
 }
