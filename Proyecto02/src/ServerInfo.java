@@ -13,16 +13,19 @@ public class ServerInfo implements Serializable{
 	private String tipo;
 	private Queue<Archivo> archivos;
 	private InetAddress IP;
-	private int puerto;
+    private int puerto;
+    private int puertoR;
+
 	private int edad;
 
-	public ServerInfo(String n, String t, InetAddress ip, int p){
+    public ServerInfo(String n, String t, InetAddress ip, int p,int pr){
 		archivos = new LinkedList<Archivo>();
 		nombre = n;
 		tipo = t;
 		edad = 1;
 		IP = ip;
 		puerto = p;
+		puertoR = pr;
 	}
 
 	public String getNombre(){
@@ -44,6 +47,11 @@ public class ServerInfo implements Serializable{
 	public int getPuerto(){
 		return puerto;
 	}
+
+    	public int getPuertoR(){
+		return puertoR;
+	}
+
 	
 	public String toString(){
 		return "IP: " + this.IP + 

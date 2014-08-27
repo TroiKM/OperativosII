@@ -21,12 +21,11 @@ public class Check implements Runnable{
 	while(true){
 	    try{
 		for (ServerInfo inf: this.servers.getQueue()) {
+		    System.out.println("Check: send");		
 		    Mensajeria.sendMessage(this.socket,inf.getIP(),
-					   inf.getPuerto(),"STAYING",0);
-
+					   inf.getPuertoR(),"STAYING",0);
 		    rec = Mensajeria.receivePacket(this.socket);
-		    Thread.sleep(500);
-		    
+		    Thread.sleep(1000);		    
 		}
 	    }catch(IOException e){
 		e.printStackTrace();
