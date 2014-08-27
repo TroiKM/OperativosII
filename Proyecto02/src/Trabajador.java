@@ -8,18 +8,17 @@ import java.util.Queue;
 
 public class Trabajador implements Runnable{
 
-        private Colas<DatagramPacket> mensajes;
-        private MulticastSocket socket;
-		  private MulticastSocket commandSocket;
+    private Colas<DatagramPacket> mensajes;
+    private MulticastSocket socket;
     
-        private InetAddress group;
-        private int puertoDNS;
-        private InetAddress dirDNS;
-        private int time;
+    private InetAddress group;
+    private int puertoDNS;
+    private InetAddress dirDNS;
+    private int time;
 
-        private Servicios serv;
-        private int puerto;
-        private ServerInfo info;
+    private Servicios serv;
+    private int puerto;
+    private ServerInfo info;
     private Colas<ServerInfo> servers;
 	     private int k;
     
@@ -36,63 +35,60 @@ public class Trabajador implements Runnable{
 					 k = kes;
         }
 
-        public void run(){
+    public void run(){
         
-                while(true){
+        while(true){
                 
-                        Mensaje men = null;
-                        time++;
-                        DatagramPacket wrd = this.mensajes.removeElem();
+            Mensaje men = null;
+            time++;
+            DatagramPacket wrd = this.mensajes.removeElem();
                         
-                        if(wrd!=null){
-                
-                                try{
-                                        men = Mensajeria.decodePacket(wrd);
-                                        time = Math.max(men.getTime(),time);
-                                        time++;
-                                        executeCommand(men,wrd.getAddress(),wrd.getPort());
-                                }catch(IOException e){
-                                        e.printStackTrace();
-                                }
-                        }
+            if(wrd!=null){
+                try{
+                    men = Mensajeria.decodePacket(wrd);
+                    time = Math.max(men.getTime(),time);
+                    time++;
+                    executeCommand(men);
+                }catch(IOException e){
+                    e.printStackTrace();
                 }
+            }
         }
+    }
 
         private void executeCommand(Mensaje men, InetAddress addr, int port)
 		  throws IOException{
-                String com = men.getCommand();
+		  
+				String com = men.getCommand();
+				if(com.equals("COORD")){
+					try{
+               	serv = new
+						ServiciosImpl("localhost",String.valueOf(puerto),
+						this, k);
+                  LocateRegistry.createRegistry(puerto);
+                  Naming.rebind("rmi://localhost:" + puerto + "/Servicios",serv);
+            }catch(RemoteException e){
+                e.printStackTrace();
+            }catch(MalformedURLException e){
+                e.printStackTrace();
+            }
+            System.out.println("Ahora soy el cordi");
+        }else if ( com.equals("OK") ) {
+            try{
+                Mensajeria.sendMessage(this.socket,(InetAddress)men.getAttribute(0),(int)men.getAttribute(1),"SERVER",time, this.info );
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }else if (com.equals("SERVER")) {
+            ServerInfo i = (ServerInfo) men.getAttribute(0);
+            Queue<ServerInfo> dummy = new LinkedList<ServerInfo>(this.servers.getQueue());
+            dummy.add(this.info);
 
-                if(com.equals("COORD")){
-                        try{
-                                serv = new
-										  ServiciosImpl("localhost",String.valueOf(puerto),
-										  this, k);
-                                LocateRegistry.createRegistry(puerto);
-                                Naming.rebind("rmi://localhost:" + puerto + "/Servicios",serv);
-//                              this.servers.addElem(this.info);
-
-                        }catch(RemoteException e){
-                                e.printStackTrace();
-                        }catch(MalformedURLException e){
-                                e.printStackTrace();
-                        }
-                        System.out.println("Ahora soy el cordi");
-                }else if ( com.equals("OK") ) {
-                        try{
-                                Mensajeria.sendMessage(this.socket,(InetAddress)men.getAttribute(0),(int)men.getAttribute(1),"SERVER",time, this.info );
-                        }catch(IOException e){
-                                e.printStackTrace();
-                        }
-                }else if (com.equals("SERVER")) {
-                    ServerInfo i = (ServerInfo) men.getAttribute(0);
-                    Queue<ServerInfo> dummy = new LinkedList<ServerInfo>(this.servers.getQueue());
-                    dummy.add(this.info);
-
-                    try{
-                        Mensajeria.sendMessage(this.socket,i.getIP(),i.getPuerto(),"NEWSERVER",time, dummy);
-                    }catch(IOException e){
-                        e.printStackTrace();
-                    }
+            try{
+                Mensajeria.sendMessage(this.socket,i.getIP(),i.getPuerto(),"NEWSERVER",time, dummy);
+            }catch(IOException e){
+                e.printStackTrace();
+            }
                     
                     dummy.add(i);
                     Mensajeria.broadcast(this.socket,this.servers.getQueue(),"NEWSERVER",time, dummy);
@@ -188,4 +184,5 @@ public class Trabajador implements Runnable{
 					 }
 					 return 0;
 		  }
+
 } 

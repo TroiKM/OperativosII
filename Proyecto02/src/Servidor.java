@@ -1,7 +1,7 @@
 /**Clase Servidor: Clase que especifica a un servidor de control de versiones
-*@param tipo: Tipo del servidor. Puede ser pasivo, activo o principal
-*@param info: Informacion del servidor
-**/
+ *@param tipo: Tipo del servidor. Puede ser pasivo, activo o principal
+ *@param info: Informacion del servidor
+ **/
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,13 +10,14 @@ import java.util.Queue;
 import java.net.*;
 import java.io.*;
 
-public class Servidor{	
+public class Servidor{  
 
-	private ServerInfo info;
-	private Queue<ServerInfo> servers;
+    private ServerInfo info;
+    private Queue<ServerInfo> servers;
     private MulticastSocket socket;
     private MulticastSocket socket2;
     private MulticastSocket socket3;
+<<<<<<< HEAD
 	 private MulticastSocket commandSocket;
 	private InetAddress group;
 	private int puertoDNS;
@@ -52,9 +53,8 @@ public class Servidor{
 		info = new ServerInfo(n,tipo,group, gPort, gPort2);
 		System.out.println("My info: " + info);
 
-		Thread ali = new Thread(new Alive(socket2),"Alive");
-		Thread che = new Thread(new Check(x,socket3,y),"Check");
-
+      Thread ali = new Thread(new Alive(socket2),"Alive");
+      Thread che = new Thread(new Check(x,socket3,y),"Check");
 		Thread oye = new Thread(new Oyente(x,socket),"Oyente");
 		Thread tra = new Thread(new
 		Trabajador(x,socket,gPort,info,y,commandSocket,k), "Trabaj");
@@ -67,19 +67,19 @@ public class Servidor{
 		
 		System.out.println("Starting the send");
 
-		try{
-		    Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+        try{
+            Mensajeria.sendMessage(socket,dirDNS,puertoDNS,"SERVER",time);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
 
-		try{
-		    oye.join();
-		    tra.join();
-		} catch(InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+        try{
+            oye.join();
+            tra.join();
+        } catch(InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 	public static void main(String args[]){
 	    Servidor s = new
