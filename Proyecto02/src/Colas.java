@@ -1,7 +1,7 @@
 /**  
- * @author Karen Troiano		09-10855
- * @author Luis Miranda		10-10463
- * @author Jose Montenegro	10-10469
+ * @author Karen Troiano                09-10855
+ * @author Luis Miranda         10-10463
+ * @author Jose Montenegro      10-10469
  *
  * Colas: Clase que representa al monitor de colas.
  *
@@ -14,10 +14,10 @@ import java.util.ArrayList;
 import java.util.Queue;
 
 public class Colas<E>{
-	
+        
     Queue<E> cola;
     int elem;
-    	
+        
     /**
      * Constructor de Colas.
      */
@@ -31,9 +31,9 @@ public class Colas<E>{
     }
 
     public synchronized void setQueue(Queue<E> s) {
-	this.cola = s;
+        this.cola = s;
     }
-	
+        
     public synchronized void addElem(E p){
         cola.add(p);
         this.elem++;
@@ -53,7 +53,7 @@ public class Colas<E>{
         return cola.remove();
     }
     public synchronized void removeElem(E o) {
-	this.cola.remove(o);
+        this.cola.remove(o);
     }
     
     public synchronized E peekElem(){
