@@ -19,7 +19,7 @@ public class Alive implements Runnable{
 	    try{
 		System.out.println("Alive: listen");
 		rec = Mensajeria.receivePacket(this.socket);
-		System.out.println("Alive: recive");
+		System.out.println("Alive: recive de "+rec.getPort());
 		Mensajeria.sendMessage(this.socket,rec.getAddress(),
 				       rec.getPort(),"ALIVE",0);
 		

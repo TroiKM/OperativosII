@@ -61,6 +61,8 @@ public class Trabajador implements Runnable{
 				serv = new ServiciosImpl("localhost",String.valueOf(puerto));
 				LocateRegistry.createRegistry(puerto);
 				Naming.rebind("rmi://localhost:" + puerto + "/Servicios",serv);
+				this.servers.addElem(this.info);
+
 			}catch(RemoteException e){
 				e.printStackTrace();
 			}catch(MalformedURLException e){

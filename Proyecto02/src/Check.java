@@ -1,5 +1,7 @@
 import java.net.*;
 import java.io.IOException;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Check implements Runnable{
 
@@ -19,9 +21,10 @@ public class Check implements Runnable{
 	DatagramPacket rec = null;
 
 	while(true){
+	    LinkedList<ServerInfo> dummy = new LinkedList<ServerInfo>(this.servers.getQueue());
 	    try{
-		for (ServerInfo inf: this.servers.getQueue()) {
-		    System.out.println("Check: send");		
+		for (ServerInfo inf: dummy) {
+		    System.out.println("Check: send a "+inf.getPuertoR());
 		    Mensajeria.sendMessage(this.socket,inf.getIP(),
 					   inf.getPuertoR(),"STAYING",0);
 		    rec = Mensajeria.receivePacket(this.socket);
